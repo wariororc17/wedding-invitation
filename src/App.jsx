@@ -683,191 +683,121 @@ export default function App() {
         ))}
       </div>
 
- <AnimatePresence>
-  {!opened && (
-    <motion.div
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.9 } }}
-      className="fixed inset-0 z-40 flex items-center justify-center overflow-hidden bg-[#050308]"
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(176,32,64,0.22),transparent_28%),radial-gradient(circle_at_50%_100%,rgba(120,15,35,0.2),transparent_36%),linear-gradient(180deg,#110106_0%,#060107_100%)]" />
-
-      <motion.div
-        className="absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
-        animate={{
-          scale: [1, 1.08, 1],
-          opacity: [0.14, 0.24, 0.14],
-        }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          background:
-            "radial-gradient(circle, rgba(190,30,60,0.28) 0%, rgba(120,10,35,0.18) 40%, transparent 72%)",
-        }}
-      />
-
-      <motion.div
-        initial={{ opacity: 0, y: 30, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 1 }}
-        className="relative z-10 mx-4 w-full max-w-4xl"
-      >
-        <div className="relative mx-auto w-full max-w-[760px]">
-          {/* shadow */}
-          <div className="absolute inset-x-[8%] bottom-[-24px] h-16 rounded-full bg-black/50 blur-2xl" />
-
-          {/* invitation card inside envelope */}
+     <AnimatePresence>
+        {!opened && (
           <motion.div
-            initial={{ y: 18, opacity: 0.92, scale: 0.985 }}
-            animate={{
-              y: [18, 10, 18],
-              opacity: 1,
-              scale: [0.985, 1, 0.985],
-            }}
-            transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute left-1/2 top-[7%] z-0 w-[84%] -translate-x-1/2"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.8 } }}
+            className="fixed inset-0 z-40 flex items-center justify-center overflow-hidden bg-[#050308]"
           >
-            <div className="overflow-hidden rounded-[1.8rem] border border-[#f3d1dc]/15 bg-[linear-gradient(180deg,rgba(255,248,250,0.98),rgba(246,230,236,0.95))] px-6 py-8 text-center shadow-[0_20px_80px_rgba(0,0,0,0.45)] sm:px-8 sm:py-10 md:px-12">
-              <div className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,rgba(120,30,50,0.25)_1px,transparent_1px),linear-gradient(to_bottom,rgba(120,30,50,0.25)_1px,transparent_1px)] bg-[size:26px_26px]" />
-              <div className="relative">
-                <p className="text-[10px] uppercase tracking-[0.45em] text-[#8c4b60] sm:text-xs">
-                  {t.invitationLabel}
-                </p>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(176,92,125,0.16),transparent_26%),radial-gradient(circle_at_50%_100%,rgba(120,40,75,0.12),transparent_35%),linear-gradient(180deg,#07030b_0%,#040208_100%)]" />
 
-                <h1 className="mt-5 font-serif text-3xl text-[#5a1b2f] sm:text-5xl md:text-6xl">
-                  Jeremy &amp; Yowanda
-                </h1>
-
-                <p className="mt-3 text-[11px] uppercase tracking-[0.35em] text-[#a5677f] sm:text-sm">
-                  Save The Date
-                </p>
-
-                <div className="mx-auto mt-6 max-w-xl rounded-[1.2rem] border border-[#c995a8]/30 bg-white/55 px-4 py-4 backdrop-blur-md">
-                  <p className="text-[10px] uppercase tracking-[0.28em] text-[#a86f84] sm:text-xs">
-                    {t.openTo}
-                  </p>
-                  <p className="mt-2 text-lg font-medium text-[#4f1928] sm:text-2xl">
-                    {guestName || t.fallbackGuest}
-                  </p>
-                </div>
-
-                <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#714356] sm:text-base sm:leading-8">
-                  {t.heroText}
-                </p>
-
-                <div className="mt-7 space-y-1 text-sm text-[#8d5b70] sm:text-base">
-                  <p>{t.dateLine}</p>
-                  <p>Jakarta, Indonesia</p>
-                </div>
-
-                <button
-                  onClick={openInvitation}
-                  className="mt-8 inline-flex items-center justify-center rounded-full border border-[#bf728c] bg-[linear-gradient(180deg,#a72e53_0%,#7e1736_100%)] px-8 py-3 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(126,23,54,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] transition duration-300 hover:scale-[1.02]"
-                >
-                  {t.openButton}
-                </button>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* envelope body */}
-          <div className="relative h-[460px] sm:h-[520px] md:h-[560px]">
-            {/* back envelope */}
-            <div className="absolute inset-x-0 bottom-0 top-[16%] rounded-[1.8rem] border border-[#7e0f22]/70 bg-[linear-gradient(180deg,#7f0615_0%,#5f0410_100%)] shadow-[0_30px_100px_rgba(0,0,0,0.6)]" />
-
-            {/* inner luxury texture */}
-            <div className="absolute inset-x-[2%] bottom-[2%] top-[18%] rounded-[1.6rem] border border-white/5 bg-[linear-gradient(135deg,rgba(255,255,255,0.05),transparent_20%,transparent_80%,rgba(255,255,255,0.04))]" />
-
-            {/* left fold */}
-            <div
-              className="absolute bottom-[2%] left-[2%] h-[58%] w-[48%] rounded-bl-[1.6rem] border-l border-b border-[#8b1025]/70 bg-[linear-gradient(135deg,#6e0413_0%,#780817_100%)]"
-              style={{
-                clipPath: "polygon(0 100%, 100% 24%, 100% 100%)",
-              }}
-            />
-
-            {/* right fold */}
-            <div
-              className="absolute bottom-[2%] right-[2%] h-[58%] w-[48%] rounded-br-[1.6rem] border-r border-b border-[#8b1025]/70 bg-[linear-gradient(225deg,#6e0413_0%,#780817_100%)]"
-              style={{
-                clipPath: "polygon(0 24%, 100% 100%, 0 100%)",
-              }}
-            />
-
-            {/* bottom fold */}
-            <div
-              className="absolute bottom-[2%] left-1/2 h-[46%] w-[64%] -translate-x-1/2 border-b border-[#a71b34]/55 bg-[linear-gradient(180deg,#881022_0%,#6f0918_100%)]"
-              style={{
-                clipPath: "polygon(50% 0, 100% 100%, 0 100%)",
-              }}
-            />
-
-            {/* top flap */}
             <motion.div
-              initial={{ rotateX: 0 }}
-              animate={{ rotateX: [0, -4, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              style={{ transformOrigin: "top center", perspective: 1200 }}
-              className="absolute inset-x-[2%] top-[2%] z-20 h-[56%]"
+              animate={{ scale: [1, 1.03, 1], opacity: [0.65, 0.95, 0.65] }}
+              transition={{ duration: 7, repeat: Infinity }}
+              className="absolute h-[34rem] w-[34rem] rounded-full border border-[#8b4561]/25 bg-[#722f4d]/10 blur-2xl"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 28, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1 }}
+              className="relative z-10 mx-4 w-full max-w-4xl"
             >
-              <div
-                className="absolute inset-0 border border-[#931429]/70 bg-[linear-gradient(180deg,#7a0617_0%,#5f0410_100%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
-                style={{
-                  clipPath: "polygon(0 0, 100% 0, 50% 82%)",
-                }}
-              />
+              <div className="pointer-events-none absolute inset-0 rounded-[2.4rem] bg-[radial-gradient(circle_at_50%_45%,rgba(214,120,160,0.18),transparent_38%),radial-gradient(circle_at_50%_80%,rgba(135,65,105,0.18),transparent_45%)] blur-2xl" />
 
-              <div
-                className="absolute inset-0 opacity-30"
-                style={{
-                  clipPath: "polygon(0 0, 100% 0, 50% 82%)",
-                  background:
-                    "linear-gradient(135deg, rgba(255,255,255,0.08), transparent 28%, transparent 72%, rgba(255,255,255,0.04))",
-                }}
-              />
-            </motion.div>
+              <div className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-3 shadow-[0_30px_140px_rgba(0,0,0,0.7)] backdrop-blur-2xl sm:rounded-[2.6rem] sm:p-4">
+                <div className="relative overflow-hidden rounded-[1.9rem] border border-white/8 bg-[radial-gradient(circle_at_50%_35%,rgba(145,60,100,0.18),rgba(20,10,20,0.82)_55%,rgba(7,3,10,0.96)_100%)] px-6 py-10 text-center sm:rounded-[2.2rem] sm:px-10 sm:py-14 md:px-16 md:py-16">
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.07),transparent_22%,transparent_78%,rgba(255,255,255,0.04))]" />
+                  <div className="pointer-events-none absolute inset-[14px] rounded-[1.5rem] border border-white/8 sm:rounded-[1.8rem]" />
 
-            {/* seal */}
-            <div className="absolute left-1/2 top-[28%] z-30 -translate-x-1/2 -translate-y-1/2">
-              <motion.div
-                animate={{
-                  scale: [1, 1.03, 1],
-                  boxShadow: [
-                    "0 0 0 rgba(255,255,255,0.05)",
-                    "0 0 18px rgba(255,220,220,0.12)",
-                    "0 0 0 rgba(255,255,255,0.05)",
-                  ],
-                }}
-                transition={{ duration: 3.5, repeat: Infinity }}
-                className="flex h-20 w-20 items-center justify-center rounded-full border border-[#dcb6bf]/40 bg-[radial-gradient(circle,#7e0b20_0%,#5f0616_70%,#48030f_100%)] shadow-[0_8px_30px_rgba(0,0,0,0.45)] sm:h-24 sm:w-24"
-              >
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#f1dbe1]/70 text-[#f3e1e6] sm:h-16 sm:w-16">
-                  <span className="font-serif text-2xl italic sm:text-3xl">JY</span>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 0.1 }}
+                    className="relative mb-6 flex justify-center"
+                  >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d7a2b7] shadow-[0_0_25px_rgba(215,162,183,0.18)] sm:h-14 sm:w-14">
+                      <Sparkles size={18} />
+                    </div>
+                  </motion.div>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 12, letterSpacing: "0.7em" }}
+                    animate={{ opacity: 1, y: 0, letterSpacing: "0.35em" }}
+                    transition={{ duration: 0.8, delay: 0.15 }}
+                    className="text-[10px] uppercase text-[#d7a2b7] sm:text-xs"
+                  >
+                    {t.invitationLabel}
+                  </motion.p>
+
+                  <motion.h1
+                    initial={{ opacity: 0, y: 22, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.95, delay: 0.2 }}
+                    className="mt-6 bg-gradient-to-b from-white via-[#f3dbe5] to-[#d7a2b7] bg-clip-text font-serif text-4xl leading-tight text-transparent sm:text-5xl md:text-7xl"
+                  >
+                    Jeremy &amp; Yowanda
+                  </motion.h1>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.28 }}
+                    className="mt-4 text-xs uppercase tracking-[0.28em] text-[#d9b4c4] sm:text-sm sm:tracking-[0.35em]"
+                  >
+                    Save The Date
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.35 }}
+                    className="mx-auto mt-8 max-w-2xl rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-4 py-5 text-[#d9b4c4] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:px-6"
+                  >
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-[#cfa2b5] sm:text-sm">
+                      {t.openTo}
+                    </p>
+                    <p className="mt-2 text-xl font-medium text-white sm:text-2xl">
+                      {guestName || t.fallbackGuest}
+                    </p>
+                  </motion.div>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.45 }}
+                    className="mx-auto mt-8 max-w-3xl text-sm leading-8 text-[#e7d1da] sm:text-base sm:leading-9 md:text-lg"
+                  >
+                    {t.heroText}
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.55 }}
+                    className="mt-9 space-y-2 text-sm text-[#d9b4c4] sm:text-base"
+                  >
+                    <p>{t.dateLine}</p>
+                    <p>Jakarta, Indonesia</p>
+                  </motion.div>
+
+                  <motion.button
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.85, delay: 0.65 }}
+                    onClick={openInvitation}
+                    className="mt-10 inline-flex items-center justify-center rounded-full border border-[#d78bab] bg-[linear-gradient(180deg,#b25580_0%,#8d3a62_100%)] px-8 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(178,85,128,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_15px_38px_rgba(178,85,128,0.42)] sm:px-10"
+                  >
+                    {t.openButton}
+                  </motion.button>
                 </div>
-              </motion.div>
-            </div>
-
-            {/* subtle flower accent like example */}
-            <div className="pointer-events-none absolute bottom-[-8px] left-[8%] z-30 hidden sm:block">
-              <div className="relative h-32 w-36">
-                <div className="absolute bottom-0 left-10 h-24 w-[3px] rotate-[22deg] rounded-full bg-gradient-to-b from-[#88a130] to-[#6f841f]" />
-                <div className="absolute bottom-0 left-16 h-28 w-[3px] rotate-[28deg] rounded-full bg-gradient-to-b from-[#a8bc40] to-[#758c21]" />
-                <div className="absolute bottom-16 left-0 h-12 w-8 rotate-[-25deg] rounded-[70%_30%_60%_40%/60%_35%_65%_40%] bg-[linear-gradient(180deg,rgba(166,142,255,0.55),rgba(116,80,175,0.22))] blur-[1px]" />
-                <div className="absolute bottom-10 left-6 h-14 w-10 rotate-[8deg] rounded-[55%_45%_70%_30%/60%_30%_70%_40%] bg-[linear-gradient(180deg,rgba(144,123,255,0.45),rgba(87,60,158,0.18))] blur-[1px]" />
               </div>
-            </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            {/* front text hint */}
-            <div className="absolute bottom-[8%] left-1/2 z-10 -translate-x-1/2 text-center">
-              <p className="text-[10px] uppercase tracking-[0.38em] text-[#f0cfd7]/65 sm:text-xs">
-                Open The Invitation
-              </p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  )}
-</AnimatePresence>
 
       <ParallaxSection offset={35} className="relative z-10">
         <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-24 text-center sm:px-6">

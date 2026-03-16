@@ -29,6 +29,16 @@ const GALLERY = [
   "/gallery/photo 6.jpg",
 ];
 
+const STORY_IMAGES = [
+  "/story/story-1.jpg",
+  "/story/story-2.jpg",
+  "/story/story-3.jpg",
+  "/story/story-4.jpg",
+];
+
+const BRIDE_PHOTO = "/couple/bride.jpg";
+const GROOM_PHOTO = "/couple/groom.jpg";
+
 const WEDDING_DATE_ISO = "2026-06-28T17:30:00+07:00";
 
 const CONTENT = {
@@ -299,6 +309,48 @@ const RSVP_OPTIONS = {
   notAttending: { border: "border-rose-400/30", bg: "bg-rose-500/10" },
 };
 
+function SectionHeading({ eyebrow, title, subtitle }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.9 }}
+      className="text-center"
+    >
+      <motion.p
+        initial={{ opacity: 0, letterSpacing: "0.8em" }}
+        whileInView={{ opacity: 1, letterSpacing: "0.45em" }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="uppercase text-[#d6a1b7]"
+      >
+        {eyebrow}
+      </motion.p>
+      <motion.h2
+        initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.95, delay: 0.08 }}
+        className="mt-4 font-serif text-4xl text-white md:text-5xl"
+      >
+        {title}
+      </motion.h2>
+      {subtitle ? (
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.14 }}
+          className="mx-auto mt-5 max-w-2xl leading-8 text-[#ead9e0]"
+        >
+          {subtitle}
+        </motion.p>
+      ) : null}
+    </motion.div>
+  );
+}
+
 export default function App() {
   const [opened, setOpened] = useState(false);
   const [language, setLanguage] = useState("en");
@@ -351,7 +403,6 @@ export default function App() {
 
   const toggleMusic = async () => {
     if (!audioRef.current) return;
-
     try {
       if (musicOn) {
         audioRef.current.pause();
@@ -366,7 +417,6 @@ export default function App() {
 
   const openInvitation = async () => {
     setOpened(true);
-
     if (audioRef.current && !musicOn) {
       try {
         await audioRef.current.play();
@@ -413,10 +463,7 @@ export default function App() {
 
         <motion.div
           className="absolute left-1/2 top-[12%] h-[46rem] w-[46rem] -translate-x-1/2 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.08, 1],
-            opacity: [0.18, 0.28, 0.18],
-          }}
+          animate={{ scale: [1, 1.08, 1], opacity: [0.18, 0.28, 0.18] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
@@ -426,11 +473,7 @@ export default function App() {
 
         <motion.div
           className="absolute left-[-10%] top-[10%] h-[34rem] w-[34rem] rounded-full blur-3xl"
-          animate={{
-            x: [0, 35, 0],
-            y: [0, -20, 0],
-            opacity: [0.12, 0.2, 0.12],
-          }}
+          animate={{ x: [0, 35, 0], y: [0, -20, 0], opacity: [0.12, 0.2, 0.12] }}
           transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
@@ -440,11 +483,7 @@ export default function App() {
 
         <motion.div
           className="absolute right-[-8%] top-[18%] h-[30rem] w-[30rem] rounded-full blur-3xl"
-          animate={{
-            x: [0, -28, 0],
-            y: [0, 18, 0],
-            opacity: [0.1, 0.17, 0.1],
-          }}
+          animate={{ x: [0, -28, 0], y: [0, 18, 0], opacity: [0.1, 0.17, 0.1] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
@@ -454,10 +493,7 @@ export default function App() {
 
         <motion.div
           className="absolute bottom-[-10%] left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.05, 1],
-            opacity: [0.1, 0.18, 0.1],
-          }}
+          animate={{ scale: [1, 1.05, 1], opacity: [0.1, 0.18, 0.1] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
@@ -538,10 +574,7 @@ export default function App() {
               height: spark.size,
               boxShadow: "0 0 10px rgba(255,255,255,0.55)",
             }}
-            animate={{
-              opacity: [0.05, spark.opacity, 0.08],
-              scale: [0.8, 1.5, 0.9],
-            }}
+            animate={{ opacity: [0.05, spark.opacity, 0.08], scale: [0.8, 1.5, 0.9] }}
             transition={{
               duration: spark.duration,
               delay: spark.delay,
@@ -582,34 +615,17 @@ export default function App() {
         {PETALS.map((petal) => (
           <motion.div
             key={`petal-${petal.id}`}
-            initial={{
-              y: "-12vh",
-              x: 0,
-              rotate: petal.rotate,
-              opacity: 0,
-            }}
+            initial={{ y: "-12vh", x: 0, rotate: petal.rotate, opacity: 0 }}
             animate={{
               y: "110vh",
-              x: [
-                0,
-                petal.drift,
-                -petal.drift * 0.55,
-                petal.drift * 0.35,
-                0,
-              ],
+              x: [0, petal.drift, -petal.drift * 0.55, petal.drift * 0.35, 0],
               rotate: [
                 petal.rotate,
                 petal.rotate + 120,
                 petal.rotate + 220,
                 petal.rotate + 320,
               ],
-              opacity: [
-                0,
-                petal.opacity,
-                petal.opacity * 0.9,
-                petal.opacity * 0.7,
-                0,
-              ],
+              opacity: [0, petal.opacity, petal.opacity * 0.9, petal.opacity * 0.7, 0],
             }}
             transition={{
               duration: petal.duration,
@@ -685,48 +701,98 @@ export default function App() {
             className="fixed inset-0 z-40 flex items-center justify-center overflow-hidden bg-[#050308]"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(176,92,125,0.18),transparent_30%),linear-gradient(180deg,#09050d_0%,#050308_100%)]" />
+
             <motion.div
               animate={{ scale: [1, 1.03, 1], opacity: [0.65, 0.95, 0.65] }}
               transition={{ duration: 7, repeat: Infinity }}
-              className="absolute h-[30rem] w-[30rem] rounded-full border border-[#8b4561]/25 bg-[#722f4d]/10 blur-2xl"
+              className="absolute h-[34rem] w-[34rem] rounded-full border border-[#8b4561]/25 bg-[#722f4d]/10 blur-2xl"
             />
+
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="relative z-10 mx-6 max-w-2xl rounded-[2rem] border border-white/10 bg-white/5 px-8 py-12 text-center shadow-[0_25px_120px_rgba(0,0,0,0.5)] backdrop-blur-2xl"
+              className="relative z-10 mx-6 w-full max-w-3xl overflow-hidden rounded-[2.2rem] border border-white/10 bg-white/[0.06] px-8 py-14 text-center shadow-[0_25px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl md:px-14"
             >
-              <div className="mb-5 flex justify-center">
-                <Sparkles className="text-[#d7a2b7]" />
-              </div>
-              <p className="text-xs uppercase tracking-[0.5em] text-[#d7a2b7]">
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),transparent_28%,transparent_72%,rgba(255,255,255,0.04))]" />
+              <div className="pointer-events-none absolute inset-[14px] rounded-[1.8rem] border border-white/10" />
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="relative mb-5 flex justify-center"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d7a2b7]">
+                  <Sparkles size={20} />
+                </div>
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 12, letterSpacing: "0.7em" }}
+                animate={{ opacity: 1, y: 0, letterSpacing: "0.45em" }}
+                transition={{ duration: 0.8, delay: 0.15 }}
+                className="text-xs uppercase text-[#d7a2b7]"
+              >
                 {t.invitationLabel}
-              </p>
-              <h1 className="mt-5 font-serif text-5xl text-white md:text-7xl">
+              </motion.p>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 22, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.95, delay: 0.2 }}
+                className="mt-6 bg-gradient-to-b from-white via-[#f1d6e1] to-[#d8a4b8] bg-clip-text font-serif text-5xl text-transparent md:text-7xl"
+              >
                 Jeremy &amp; Yowanda
-              </h1>
-              <p className="mt-5 text-base leading-8 text-[#e3c8d4] md:text-lg">
-                {t.welcome}
-              </p>
-              <div className="mt-6 rounded-3xl border border-white/10 bg-black/20 px-5 py-4 text-[#d9b4c4]">
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.28 }}
+                className="mt-4 text-sm uppercase tracking-[0.35em] text-[#d9b4c4]"
+              >
+                Save The Date
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.35 }}
+                className="mx-auto mt-7 max-w-xl rounded-[1.5rem] border border-white/10 bg-black/20 px-5 py-4 text-[#d9b4c4]"
+              >
                 <p className="text-sm uppercase tracking-[0.28em]">{t.openTo}</p>
-                <p className="mt-2 text-xl text-white">
-                  {guestName || t.fallbackGuest}
-                </p>
-              </div>
-              <p className="mt-6 text-base leading-8 text-[#e3c8d4] md:text-lg">
+                <p className="mt-2 text-xl text-white">{guestName || t.fallbackGuest}</p>
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.45 }}
+                className="mx-auto mt-7 max-w-2xl text-base leading-8 text-[#e3c8d4] md:text-lg"
+              >
                 {t.heroText}
-              </p>
-              <div className="mt-8 space-y-2 text-[#d9b4c4]">
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.55 }}
+                className="mt-8 space-y-2 text-[#d9b4c4]"
+              >
                 <p>{t.dateLine}</p>
                 <p>Jakarta, Indonesia</p>
-              </div>
-              <button
+              </motion.div>
+
+              <motion.button
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.85, delay: 0.65 }}
                 onClick={openInvitation}
                 className="mt-10 rounded-full border border-[#c67897] bg-gradient-to-r from-[#7b294f] to-[#a44572] px-8 py-3 text-sm font-medium text-white shadow-[0_0_40px_rgba(164,69,114,0.35)] transition hover:scale-[1.02]"
               >
                 {t.openButton}
-              </button>
+              </motion.button>
             </motion.div>
           </motion.div>
         )}
@@ -749,18 +815,20 @@ export default function App() {
 
         <div className="mx-auto max-w-6xl">
           <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 14, letterSpacing: "0.7em" }}
+            whileInView={{ opacity: 1, y: 0, letterSpacing: "0.55em" }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="uppercase tracking-[0.55em] text-[#d8a1b8]"
+            className="uppercase text-[#d8a1b8]"
           >
             {t.theWeddingOf}
           </motion.p>
 
           <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.1 }}
+            initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.08 }}
             className="mt-6 bg-gradient-to-b from-white via-[#f6dfe8] to-[#d6a6b8] bg-clip-text font-serif text-6xl text-transparent md:text-8xl lg:text-[7rem]"
           >
             Jeremy &amp; Yowanda
@@ -769,7 +837,8 @@ export default function App() {
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.16 }}
             className="mx-auto mt-8 max-w-3xl text-base leading-8 text-[#ebd7df] md:text-lg"
           >
             {t.heroText}
@@ -778,7 +847,8 @@ export default function App() {
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.24 }}
             className="mt-12 flex flex-wrap items-center justify-center gap-4"
           >
             <a
@@ -821,12 +891,10 @@ export default function App() {
 
       <section className="relative z-10 px-6 py-24 text-center">
         <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-            {t.countdownLabel}
-          </p>
-          <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-            {t.countdownTitle}
-          </h2>
+          <SectionHeading
+            eyebrow={t.countdownLabel}
+            title={t.countdownTitle}
+          />
 
           <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
             {[
@@ -834,9 +902,13 @@ export default function App() {
               { label: t.hours, value: timeLeft.hours },
               { label: t.minutes, value: timeLeft.minutes },
               { label: t.seconds, value: timeLeft.seconds },
-            ].map((item) => (
-              <div
+            ].map((item, idx) => (
+              <motion.div
                 key={item.label}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: idx * 0.08 }}
                 className="rounded-[1.5rem] border border-white/10 bg-black/25 p-6 shadow-xl backdrop-blur-xl"
               >
                 <div className="text-4xl font-semibold text-white md:text-5xl">
@@ -845,70 +917,72 @@ export default function App() {
                 <div className="mt-2 text-xs uppercase tracking-[0.3em] text-[#d7a8bb]">
                   {item.label}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       <section id="story" className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-16 text-center">
-            <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-              {t.storyLabel}
-            </p>
-            <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-              {t.storyTitle}
-            </h2>
-          </div>
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            eyebrow={t.storyLabel}
+            title={t.storyTitle}
+          />
 
-          <div className="relative mx-auto max-w-3xl">
-            <div className="absolute left-5 top-0 h-full w-px bg-gradient-to-b from-transparent via-[#a96180] to-transparent md:left-1/2" />
-            <div className="space-y-12">
-              {t.stories.map((story, i) => (
-                <motion.div
-                  key={story.year}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: 0.7, delay: i * 0.08 }}
-                  className={`relative md:flex ${i % 2 === 0 ? "md:justify-start" : "md:justify-end"}`}
-                >
-                  <div className="absolute left-5 top-6 z-10 h-3 w-3 rounded-full bg-[#d89db4] shadow-[0_0_20px_rgba(216,157,180,0.9)] md:left-1/2 md:-translate-x-1/2" />
-                  <div className="ml-12 w-full rounded-[1.8rem] border border-white/10 bg-white/5 p-7 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl md:ml-0 md:w-[46%]">
-                    <p className="text-sm uppercase tracking-[0.25em] text-[#d9a9bc]">
-                      {story.year}
-                    </p>
-                    <h3 className="mt-3 font-serif text-3xl text-white">
-                      {story.title}
-                    </h3>
-                    <p className="mt-4 leading-8 text-[#ead9e0]">
-                      {story.text}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="mt-16 space-y-10">
+            {t.stories.map((story, i) => (
+              <motion.div
+                key={story.year}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, delay: i * 0.06 }}
+                className={`grid items-center gap-8 rounded-[2rem] border border-white/10 bg-white/5 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl md:grid-cols-2 md:p-6 ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}
+              >
+                <div className="overflow-hidden rounded-[1.5rem] border border-white/10">
+                  <img
+                    src={STORY_IMAGES[i] || STORY_IMAGES[0]}
+                    alt={story.title}
+                    className="h-[280px] w-full object-cover transition duration-700 hover:scale-105"
+                  />
+                </div>
+
+                <div className="px-2 md:px-4">
+                  <p className="text-sm uppercase tracking-[0.35em] text-[#d9a9bc]">
+                    {story.year}
+                  </p>
+                  <h3 className="mt-3 font-serif text-3xl text-white">{story.title}</h3>
+                  <p className="mt-5 leading-8 text-[#ead9e0]">{story.text}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-            {t.coupleLabel}
-          </p>
-          <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-            {t.coupleTitle}
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl leading-8 text-[#ead9e0]">
-            {t.coupleText}
-          </p>
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading
+            eyebrow={t.coupleLabel}
+            title={t.coupleTitle}
+            subtitle={t.coupleText}
+          />
 
           <div className="mt-14 grid gap-8 md:grid-cols-2">
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl">
-              <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full border border-[#ba7896]/40 bg-gradient-to-br from-[#7b294f]/50 to-transparent text-[#f6dce7] shadow-xl">
-                <Heart size={34} />
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl"
+            >
+              <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border border-[#ba7896]/40 shadow-xl">
+                <img
+                  src={BRIDE_PHOTO}
+                  alt="Yowanda"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <p className="mt-6 text-sm uppercase tracking-[0.3em] text-[#d5a2b6]">
                 {t.bride}
@@ -919,11 +993,21 @@ export default function App() {
                 <br />
                 Bapak [Nama Ayah] &amp; Ibu [Nama Ibu]
               </p>
-            </div>
+            </motion.div>
 
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl">
-              <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full border border-[#ba7896]/40 bg-gradient-to-br from-[#7b294f]/50 to-transparent text-[#f6dce7] shadow-xl">
-                <Heart size={34} />
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.08 }}
+              className="rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl"
+            >
+              <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border border-[#ba7896]/40 shadow-xl">
+                <img
+                  src={GROOM_PHOTO}
+                  alt="Jeremy"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <p className="mt-6 text-sm uppercase tracking-[0.3em] text-[#d5a2b6]">
                 {t.groom}
@@ -934,24 +1018,26 @@ export default function App() {
                 <br />
                 Bapak [Nama Ayah] &amp; Ibu [Nama Ibu]
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       <section id="event" className="relative z-10 px-6 py-24">
         <div className="mx-auto max-w-6xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <div className="text-center">
-            <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-              {t.eventLabel}
-            </p>
-            <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-              {t.eventTitle}
-            </h2>
-          </div>
+          <SectionHeading
+            eyebrow={t.eventLabel}
+            title={t.eventTitle}
+          />
 
           <div className="mt-14 grid gap-8 md:grid-cols-2">
-            <div className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 backdrop-blur-xl">
+            <motion.div
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.75 }}
+              className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 backdrop-blur-xl"
+            >
               <div className="mb-4 flex items-center justify-center text-[#d4a1b5]">
                 <CalendarDays size={28} />
               </div>
@@ -978,9 +1064,15 @@ export default function App() {
                   <ExternalLink size={14} />
                 </a>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 backdrop-blur-xl">
+            <motion.div
+              initial={{ opacity: 0, y: 26 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.75, delay: 0.08 }}
+              className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 backdrop-blur-xl"
+            >
               <div className="mb-4 flex items-center justify-center text-[#d4a1b5]">
                 <Sparkles size={28} />
               </div>
@@ -1007,26 +1099,20 @@ export default function App() {
                   <ExternalLink size={14} />
                 </a>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       <section id="gallery" className="relative z-10 px-6 py-24">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-14 text-center">
-            <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-              {t.galleryLabel}
-            </p>
-            <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-              {t.galleryTitle}
-            </h2>
-            <p className="mx-auto mt-5 max-w-2xl leading-8 text-[#ead9e0]">
-              {t.gallerySubtitle}
-            </p>
-          </div>
+          <SectionHeading
+            eyebrow={t.galleryLabel}
+            title={t.galleryTitle}
+            subtitle={t.gallerySubtitle}
+          />
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="mt-14 grid gap-6 md:grid-cols-3">
             {GALLERY.map((src, i) => (
               <motion.button
                 key={src}
@@ -1054,26 +1140,18 @@ export default function App() {
 
       <section id="gift" className="relative z-10 px-6 py-24">
         <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <div className="text-center">
-            <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-              {t.giftLabel}
-            </p>
-            <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-              {t.giftTitle}
-            </h2>
-            <p className="mx-auto mt-6 max-w-2xl leading-8 text-[#ead9e0]">
-              {t.giftText}
-            </p>
-          </div>
+          <SectionHeading
+            eyebrow={t.giftLabel}
+            title={t.giftTitle}
+            subtitle={t.giftText}
+          />
 
           <div className="mt-12 grid gap-8 md:grid-cols-3">
             <div className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 text-center backdrop-blur-xl">
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
                 <QrCode size={24} />
               </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">
-                {t.qrTitle}
-              </h3>
+              <h3 className="mt-5 font-serif text-2xl text-white">{t.qrTitle}</h3>
               <p className="mt-3 text-sm text-[#e6cfd9]">{t.qrText}</p>
               <div className="mt-6 flex justify-center">
                 <img
@@ -1088,9 +1166,7 @@ export default function App() {
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
                 <Gift size={24} />
               </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">
-                {t.bankTitle}
-              </h3>
+              <h3 className="mt-5 font-serif text-2xl text-white">{t.bankTitle}</h3>
               <p className="mt-3 text-sm text-[#e6cfd9]">{t.bankSubtitle}</p>
               <div className="mt-6 space-y-2 text-[#ead9e0]">
                 <p className="text-lg font-medium">1234567890</p>
@@ -1109,9 +1185,7 @@ export default function App() {
               <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
                 <Users size={24} />
               </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">
-                {t.walletTitle}
-              </h3>
+              <h3 className="mt-5 font-serif text-2xl text-white">{t.walletTitle}</h3>
               <p className="mt-3 text-sm text-[#e6cfd9]">{t.walletSubtitle}</p>
               <div className="mt-6 space-y-2 text-[#ead9e0]">
                 <p className="text-lg font-medium">0812-3456-7890</p>
@@ -1131,17 +1205,11 @@ export default function App() {
 
       <section id="rsvp" className="relative z-10 px-6 py-24">
         <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <div className="text-center">
-            <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-              {t.rsvpLabel}
-            </p>
-            <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-              {t.rsvpTitle}
-            </h2>
-            <p className="mx-auto mt-6 max-w-2xl leading-8 text-[#ead9e0]">
-              {t.rsvpText}
-            </p>
-          </div>
+          <SectionHeading
+            eyebrow={t.rsvpLabel}
+            title={t.rsvpTitle}
+            subtitle={t.rsvpText}
+          />
 
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {[
@@ -1167,9 +1235,7 @@ export default function App() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             <div className="space-y-4">
-              <label className="block text-sm text-[#ead9e0]">
-                {t.fullName}
-              </label>
+              <label className="block text-sm text-[#ead9e0]">{t.fullName}</label>
               <input
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -1177,9 +1243,7 @@ export default function App() {
                 placeholder={t.fullName}
               />
 
-              <label className="block text-sm text-[#ead9e0]">
-                {t.whatsapp}
-              </label>
+              <label className="block text-sm text-[#ead9e0]">{t.whatsapp}</label>
               <input
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -1187,9 +1251,7 @@ export default function App() {
                 placeholder={t.whatsapp}
               />
 
-              <label className="block text-sm text-[#ead9e0]">
-                {t.guests}
-              </label>
+              <label className="block text-sm text-[#ead9e0]">{t.guests}</label>
               <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
                 <button
                   onClick={() => setGuestCount((prev) => Math.max(1, prev - 1))}
@@ -1208,9 +1270,7 @@ export default function App() {
             </div>
 
             <div className="space-y-4">
-              <label className="block text-sm text-[#ead9e0]">
-                {t.wishes}
-              </label>
+              <label className="block text-sm text-[#ead9e0]">{t.wishes}</label>
               <textarea
                 value={form.wishes}
                 onChange={(e) => setForm({ ...form, wishes: e.target.value })}
@@ -1247,15 +1307,11 @@ export default function App() {
 
       <section className="relative z-10 px-6 pb-24 pt-10">
         <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 text-center shadow-[0_20px_80px_rgba(0,0,0,0.4)] backdrop-blur-2xl md:p-12">
-          <p className="uppercase tracking-[0.45em] text-[#d6a1b7]">
-            {t.closingLabel}
-          </p>
-          <h2 className="mt-4 font-serif text-4xl text-white md:text-5xl">
-            {t.closingTitle}
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl leading-8 text-[#ead9e0]">
-            {t.closingText}
-          </p>
+          <SectionHeading
+            eyebrow={t.closingLabel}
+            title={t.closingTitle}
+            subtitle={t.closingText}
+          />
         </div>
       </section>
 

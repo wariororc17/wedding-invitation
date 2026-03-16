@@ -252,15 +252,15 @@ const CONTENT = {
   },
 };
 
-const PETALS = Array.from({ length: 28 }, (_, index) => ({
+const PETALS = Array.from({ length: 30 }, (_, index) => ({
   id: index,
   left: `${Math.random() * 100}%`,
   delay: Math.random() * 10,
-  duration: 14 + Math.random() * 12,
+  duration: 16 + Math.random() * 14,
   size: 10 + Math.random() * 16,
-  drift: 20 + Math.random() * 36,
+  drift: 18 + Math.random() * 40,
   rotate: Math.random() * 360,
-  opacity: 0.16 + Math.random() * 0.26,
+  opacity: 0.12 + Math.random() * 0.24,
 }));
 
 const STARS = Array.from({ length: 36 }, (_, index) => ({
@@ -273,14 +273,24 @@ const STARS = Array.from({ length: 36 }, (_, index) => ({
   opacity: 0.2 + Math.random() * 0.45,
 }));
 
-const DUST = Array.from({ length: 26 }, (_, index) => ({
+const DUST_PARTICLES = Array.from({ length: 24 }, (_, index) => ({
   id: index,
   left: `${Math.random() * 100}%`,
   top: `${Math.random() * 100}%`,
-  size: 40 + Math.random() * 90,
+  size: 60 + Math.random() * 120,
+  delay: Math.random() * 10,
+  duration: 14 + Math.random() * 12,
+  opacity: 0.025 + Math.random() * 0.045,
+}));
+
+const SMALL_SPARKLES = Array.from({ length: 22 }, (_, index) => ({
+  id: index,
+  left: `${Math.random() * 100}%`,
+  top: `${Math.random() * 100}%`,
+  size: 1.5 + Math.random() * 2.5,
   delay: Math.random() * 8,
-  duration: 14 + Math.random() * 10,
-  opacity: 0.03 + Math.random() * 0.05,
+  duration: 3 + Math.random() * 4,
+  opacity: 0.18 + Math.random() * 0.35,
 }));
 
 const RSVP_OPTIONS = {
@@ -304,7 +314,6 @@ export default function App() {
   const [attendance, setAttendance] = useState("attending");
   const [guestCount, setGuestCount] = useState(2);
   const [form, setForm] = useState({ name: "", phone: "", wishes: "" });
-  const [scrollY, setScrollY] = useState(0);
   const audioRef = useRef(null);
 
   const t = CONTENT[language];
@@ -339,14 +348,6 @@ export default function App() {
     const timer = setTimeout(() => setCopiedKey(""), 1800);
     return () => clearTimeout(timer);
   }, [copiedKey]);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const toggleMusic = async () => {
     if (!audioRef.current) return;
@@ -408,73 +409,92 @@ export default function App() {
       </audio>
 
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <motion.div
-          className="absolute inset-0"
-          animate={{
-            background: `radial-gradient(circle at 50% ${18 + Math.min(scrollY / 35, 55)}%, rgba(255, 233, 244, 0.11), rgba(236, 171, 201, 0.07) 16%, rgba(132, 51, 89, 0.04) 30%, transparent 54%)`,
-          }}
-          transition={{ type: "tween", ease: "easeOut", duration: 0.35 }}
-        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(90,20,55,0.32),transparent_22%),linear-gradient(180deg,#08030d_0%,#05020a_35%,#07030b_65%,#09040d_100%)]" />
 
         <motion.div
-          className="absolute inset-0"
-          animate={{
-            background: `radial-gradient(circle at ${22 + Math.min(scrollY / 80, 18)}% ${26 + Math.min(scrollY / 55, 28)}%, rgba(255,255,255,0.045), transparent 22%)`,
-          }}
-          transition={{ type: "tween", ease: "easeOut", duration: 0.45 }}
-        />
-
-        <motion.div
-          className="absolute left-1/2 top-[8%] h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
+          className="absolute left-1/2 top-[12%] h-[46rem] w-[46rem] -translate-x-1/2 rounded-full blur-3xl"
           animate={{
             scale: [1, 1.08, 1],
-            opacity: [0.16, 0.24, 0.16],
+            opacity: [0.18, 0.28, 0.18],
           }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
-              "radial-gradient(circle, rgba(255,220,235,0.22) 0%, rgba(214,120,160,0.12) 34%, rgba(120,40,80,0.04) 60%, transparent 76%)",
+              "radial-gradient(circle, rgba(255,180,215,0.22) 0%, rgba(188,78,130,0.14) 28%, rgba(84,27,76,0.08) 52%, transparent 75%)",
           }}
         />
 
         <motion.div
-          className="absolute left-[-10%] top-[22%] h-[32rem] w-[32rem] rounded-full blur-3xl"
+          className="absolute left-[-10%] top-[10%] h-[34rem] w-[34rem] rounded-full blur-3xl"
           animate={{
-            x: [0, 30, 0],
-            y: [0, -18, 0],
+            x: [0, 35, 0],
+            y: [0, -20, 0],
+            opacity: [0.12, 0.2, 0.12],
+          }}
+          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,160,210,0.16) 0%, rgba(135,45,90,0.1) 40%, transparent 72%)",
+          }}
+        />
+
+        <motion.div
+          className="absolute right-[-8%] top-[18%] h-[30rem] w-[30rem] rounded-full blur-3xl"
+          animate={{
+            x: [0, -28, 0],
+            y: [0, 18, 0],
+            opacity: [0.1, 0.17, 0.1],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(145,105,255,0.14) 0%, rgba(87,42,132,0.08) 42%, transparent 72%)",
+          }}
+        />
+
+        <motion.div
+          className="absolute bottom-[-10%] left-1/2 h-[32rem] w-[32rem] -translate-x-1/2 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.05, 1],
             opacity: [0.1, 0.18, 0.1],
           }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
-              "radial-gradient(circle, rgba(255,190,220,0.18) 0%, rgba(165,80,120,0.08) 42%, transparent 72%)",
+              "radial-gradient(circle, rgba(173,32,91,0.16) 0%, rgba(110,20,60,0.08) 42%, transparent 74%)",
           }}
         />
 
         <motion.div
-          className="absolute right-[-8%] top-[28%] h-[30rem] w-[30rem] rounded-full blur-3xl"
-          animate={{
-            x: [0, -26, 0],
-            y: [0, 20, 0],
-            opacity: [0.08, 0.16, 0.08],
-          }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-[10%] top-0 h-[120vh] w-[22vw] blur-3xl"
+          animate={{ opacity: [0.04, 0.085, 0.04], x: [0, 20, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
-              "radial-gradient(circle, rgba(180,140,255,0.16) 0%, rgba(98,60,170,0.08) 38%, transparent 72%)",
+              "linear-gradient(180deg, rgba(255,190,225,0.2) 0%, rgba(255,190,225,0.05) 18%, transparent 45%)",
+            clipPath: "polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)",
           }}
         />
 
         <motion.div
-          className="absolute left-1/2 top-0 h-[120vh] w-[70vw] -translate-x-1/2 blur-3xl"
-          animate={{
-            opacity: [0.05, 0.1, 0.05],
+          className="absolute right-[8%] top-0 h-[120vh] w-[20vw] blur-3xl"
+          animate={{ opacity: [0.03, 0.07, 0.03], x: [0, -18, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(193,160,255,0.16) 0%, rgba(193,160,255,0.04) 18%, transparent 45%)",
+            clipPath: "polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)",
           }}
+        />
+
+        <motion.div
+          className="absolute left-1/2 top-0 h-[100vh] w-[60vw] -translate-x-1/2 blur-3xl"
+          animate={{ opacity: [0.04, 0.08, 0.04] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           style={{
             background:
-              "linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,220,235,0.04) 18%, transparent 42%)",
-            clipPath: "ellipse(40% 50% at 50% 0%)",
+              "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,225,238,0.04) 16%, transparent 42%)",
+            clipPath: "ellipse(40% 55% at 50% 0%)",
           }}
         />
 
@@ -483,13 +503,7 @@ export default function App() {
             key={`star-${star.id}`}
             initial={{ opacity: 0.08, scale: 0.8 }}
             animate={{
-              opacity: [
-                0.08,
-                star.opacity,
-                0.12,
-                star.opacity * 0.7,
-                0.08,
-              ],
+              opacity: [0.08, star.opacity, 0.12, star.opacity * 0.7, 0.08],
               scale: [0.8, 1.15, 0.95, 1.2, 0.85],
             }}
             transition={{
@@ -505,7 +519,7 @@ export default function App() {
               width: star.size,
               height: star.size,
               boxShadow:
-                "0 0 10px rgba(255,255,255,0.45), 0 0 18px rgba(244,196,220,0.2)",
+                "0 0 10px rgba(255,255,255,0.45), 0 0 18px rgba(244,196,220,0.18)",
             }}
           >
             <div className="absolute left-1/2 top-1/2 h-[220%] w-[1px] -translate-x-1/2 -translate-y-1/2 bg-white/35 blur-[1px]" />
@@ -513,15 +527,39 @@ export default function App() {
           </motion.div>
         ))}
 
-        {DUST.map((dust) => (
+        {SMALL_SPARKLES.map((spark) => (
+          <motion.div
+            key={`spark-${spark.id}`}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: spark.left,
+              top: spark.top,
+              width: spark.size,
+              height: spark.size,
+              boxShadow: "0 0 10px rgba(255,255,255,0.55)",
+            }}
+            animate={{
+              opacity: [0.05, spark.opacity, 0.08],
+              scale: [0.8, 1.5, 0.9],
+            }}
+            transition={{
+              duration: spark.duration,
+              delay: spark.delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+
+        {DUST_PARTICLES.map((dust) => (
           <motion.div
             key={`dust-${dust.id}`}
             className="absolute rounded-full blur-3xl"
             initial={{ opacity: dust.opacity }}
             animate={{
-              x: [0, 18, -14, 0],
-              y: [0, -22, 16, 0],
-              opacity: [dust.opacity, dust.opacity * 1.6, dust.opacity],
+              x: [0, 18, -10, 0],
+              y: [0, -24, 12, 0],
+              opacity: [dust.opacity, dust.opacity * 1.8, dust.opacity],
               scale: [1, 1.08, 0.96, 1],
             }}
             transition={{
@@ -536,13 +574,10 @@ export default function App() {
               width: dust.size,
               height: dust.size,
               background:
-                "radial-gradient(circle, rgba(255,235,245,0.9) 0%, rgba(255,210,230,0.35) 35%, transparent 72%)",
+                "radial-gradient(circle, rgba(255,235,245,0.8) 0%, rgba(255,210,230,0.28) 35%, transparent 72%)",
             }}
           />
         ))}
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(180,80,120,0.18),transparent_26%),radial-gradient(circle_at_80%_18%,rgba(130,70,160,0.16),transparent_24%),radial-gradient(circle_at_50%_75%,rgba(120,30,60,0.22),transparent_32%),linear-gradient(180deg,#0a0611_0%,#06040a_45%,#0a0611_100%)]" />
-        <div className="absolute inset-0 opacity-[0.14] bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
         {PETALS.map((petal) => (
           <motion.div
@@ -589,30 +624,14 @@ export default function App() {
               className="relative"
               style={{ width: petal.size * 0.9, height: petal.size * 1.4 }}
             >
-              <div className="absolute inset-0 rounded-[70%_30%_65%_35%/60%_35%_65%_40%] bg-gradient-to-b from-[#ffe6ef]/85 via-[#f2b7cc]/68 to-[#c86d93]/42 shadow-[0_0_10px_rgba(255,220,235,0.18)]" />
-              <div className="absolute left-[16%] top-[10%] h-[36%] w-[22%] rounded-full bg-white/26 blur-[1px]" />
-              <div className="absolute bottom-[12%] right-[18%] h-[24%] w-[18%] rounded-full bg-[#ffd3e1]/22 blur-[1px]" />
+              <div className="absolute inset-0 rounded-[70%_30%_65%_35%/60%_35%_65%_40%] bg-gradient-to-b from-[#ffe6ef]/78 via-[#f2b7cc]/54 to-[#c86d93]/30 shadow-[0_0_10px_rgba(255,220,235,0.14)]" />
+              <div className="absolute left-[16%] top-[10%] h-[36%] w-[22%] rounded-full bg-white/22 blur-[1px]" />
             </div>
           </motion.div>
         ))}
 
-        <motion.div
-          animate={{ y: [0, -20, 0], opacity: [0.16, 0.28, 0.16] }}
-          transition={{ duration: 8, repeat: Infinity }}
-          className="absolute left-[7%] top-[10%] h-64 w-64 rounded-full bg-[#8e305e]/20 blur-3xl"
-        />
-        <motion.div
-          animate={{ y: [0, 18, 0], opacity: [0.12, 0.22, 0.12] }}
-          transition={{ duration: 10, repeat: Infinity }}
-          className="absolute right-[8%] top-[20%] h-80 w-80 rounded-full bg-[#522f8f]/20 blur-3xl"
-        />
-        <motion.div
-          animate={{ y: [0, -12, 0], opacity: [0.1, 0.18, 0.1] }}
-          transition={{ duration: 9, repeat: Infinity }}
-          className="absolute bottom-[7%] left-[28%] h-72 w-72 rounded-full bg-[#d17a96]/10 blur-3xl"
-        />
-
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,rgba(0,0,0,0.18)_78%,rgba(0,0,0,0.42)_100%)]" />
+        <div className="absolute inset-0 opacity-[0.08] bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_42%,rgba(0,0,0,0.2)_78%,rgba(0,0,0,0.5)_100%)]" />
       </div>
 
       <div className="fixed right-4 top-4 z-50 flex items-center gap-3 md:right-6 md:top-6">
@@ -715,17 +734,17 @@ export default function App() {
 
       <section className="relative z-10 flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 text-center">
         <motion.div
-          className="absolute left-1/2 top-[20%] h-[28rem] w-[28rem] -translate-x-1/2 rounded-full blur-3xl"
+          className="absolute left-1/2 top-[24%] h-[26rem] w-[26rem] -translate-x-1/2 rounded-full blur-3xl"
           style={{
             background:
-              "radial-gradient(circle, rgba(255,220,235,0.16) 0%, rgba(214,120,160,0.08) 34%, transparent 72%)",
+              "radial-gradient(circle, rgba(255,220,235,0.15) 0%, rgba(214,120,160,0.07) 34%, transparent 72%)",
           }}
           animate={{
-            y: [0, 16, 0],
+            y: [0, 14, 0],
             scale: [1, 1.04, 1],
-            opacity: [0.18, 0.28, 0.18],
+            opacity: [0.16, 0.24, 0.16],
           }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <div className="mx-auto max-w-6xl">

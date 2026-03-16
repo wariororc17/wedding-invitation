@@ -44,7 +44,6 @@ const WEDDING_DATE_ISO = "2026-06-28T17:30:00+07:00";
 const CONTENT = {
   en: {
     invitationLabel: "International Christian Wedding",
-    welcome: "Wedding Invitation",
     openTo: "Dear",
     openButton: "Open Invitation",
     theWeddingOf: "The Wedding Of",
@@ -153,7 +152,6 @@ const CONTENT = {
   },
   id: {
     invitationLabel: "Pernikahan Kristen Internasional",
-    welcome: "Undangan Pernikahan",
     openTo: "Kepada",
     openButton: "Buka Undangan",
     theWeddingOf: "The Wedding Of",
@@ -421,13 +419,15 @@ export default function App() {
 
   const toggleMusic = async () => {
     if (!audioRef.current) return;
+
     try {
       if (musicOn) {
         audioRef.current.pause();
+        setMusicOn(false);
       } else {
         await audioRef.current.play();
+        setMusicOn(true);
       }
-      setMusicOn((prev) => !prev);
     } catch (error) {
       console.error("Audio playback failed", error);
     }
@@ -435,6 +435,7 @@ export default function App() {
 
   const openInvitation = async () => {
     setOpened(true);
+
     if (audioRef.current && !musicOn) {
       try {
         await audioRef.current.play();
@@ -639,13 +640,17 @@ export default function App() {
         <div className="flex overflow-hidden rounded-full border border-white/15 bg-black/35 shadow-2xl backdrop-blur-xl">
           <button
             onClick={() => setLanguage("id")}
-            className={`px-3 py-2 text-xs transition sm:px-4 sm:text-sm ${language === "id" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+            className={`px-3 py-2 text-xs transition sm:px-4 sm:text-sm ${
+              language === "id" ? "bg-white text-black" : "text-white hover:bg-white/10"
+            }`}
           >
             ID
           </button>
           <button
             onClick={() => setLanguage("en")}
-            className={`px-3 py-2 text-xs transition sm:px-4 sm:text-sm ${language === "en" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+            className={`px-3 py-2 text-xs transition sm:px-4 sm:text-sm ${
+              language === "en" ? "bg-white text-black" : "text-white hover:bg-white/10"
+            }`}
           >
             EN
           </button>
@@ -685,7 +690,7 @@ export default function App() {
             exit={{ opacity: 0, transition: { duration: 0.8 } }}
             className="fixed inset-0 z-40 flex items-center justify-center overflow-hidden bg-[#050308]"
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(176,92,125,0.18),transparent_30%),linear-gradient(180deg,#09050d_0%,#050308_100%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(176,92,125,0.16),transparent_26%),radial-gradient(circle_at_50%_100%,rgba(120,40,75,0.12),transparent_35%),linear-gradient(180deg,#07030b_0%,#040208_100%)]" />
 
             <motion.div
               animate={{ scale: [1, 1.03, 1], opacity: [0.65, 0.95, 0.65] }}
@@ -694,94 +699,100 @@ export default function App() {
             />
 
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 28, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 1 }}
-              className="relative z-10 mx-4 w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.06] px-6 py-10 text-center shadow-[0_25px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:px-8 sm:py-12 md:px-14"
+              className="relative z-10 mx-4 w-full max-w-4xl"
             >
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),transparent_28%,transparent_72%,rgba(255,255,255,0.04))]" />
-              <div className="pointer-events-none absolute inset-[12px] rounded-[1.7rem] border border-white/10" />
+              <div className="pointer-events-none absolute inset-0 rounded-[2.4rem] bg-[radial-gradient(circle_at_50%_45%,rgba(214,120,160,0.18),transparent_38%),radial-gradient(circle_at_50%_80%,rgba(135,65,105,0.18),transparent_45%)] blur-2xl" />
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-                className="relative mb-5 flex justify-center"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d7a2b7] sm:h-14 sm:w-14">
-                  <Sparkles size={18} />
+              <div className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.03))] p-3 shadow-[0_30px_140px_rgba(0,0,0,0.7)] backdrop-blur-2xl sm:rounded-[2.6rem] sm:p-4">
+                <div className="relative overflow-hidden rounded-[1.9rem] border border-white/8 bg-[radial-gradient(circle_at_50%_35%,rgba(145,60,100,0.18),rgba(20,10,20,0.82)_55%,rgba(7,3,10,0.96)_100%)] px-6 py-10 text-center sm:rounded-[2.2rem] sm:px-10 sm:py-14 md:px-16 md:py-16">
+                  <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.07),transparent_22%,transparent_78%,rgba(255,255,255,0.04))]" />
+                  <div className="pointer-events-none absolute inset-[14px] rounded-[1.5rem] border border-white/8 sm:rounded-[1.8rem]" />
+
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, delay: 0.1 }}
+                    className="relative mb-6 flex justify-center"
+                  >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d7a2b7] shadow-[0_0_25px_rgba(215,162,183,0.18)] sm:h-14 sm:w-14">
+                      <Sparkles size={18} />
+                    </div>
+                  </motion.div>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 12, letterSpacing: "0.7em" }}
+                    animate={{ opacity: 1, y: 0, letterSpacing: "0.35em" }}
+                    transition={{ duration: 0.8, delay: 0.15 }}
+                    className="text-[10px] uppercase text-[#d7a2b7] sm:text-xs"
+                  >
+                    {t.invitationLabel}
+                  </motion.p>
+
+                  <motion.h1
+                    initial={{ opacity: 0, y: 22, filter: "blur(8px)" }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 0.95, delay: 0.2 }}
+                    className="mt-6 bg-gradient-to-b from-white via-[#f3dbe5] to-[#d7a2b7] bg-clip-text font-serif text-4xl leading-tight text-transparent sm:text-5xl md:text-7xl"
+                  >
+                    Jeremy &amp; Yowanda
+                  </motion.h1>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.28 }}
+                    className="mt-4 text-xs uppercase tracking-[0.28em] text-[#d9b4c4] sm:text-sm sm:tracking-[0.35em]"
+                  >
+                    Save The Date
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.35 }}
+                    className="mx-auto mt-8 max-w-2xl rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-4 py-5 text-[#d9b4c4] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] sm:px-6"
+                  >
+                    <p className="text-[11px] uppercase tracking-[0.3em] text-[#cfa2b5] sm:text-sm">
+                      {t.openTo}
+                    </p>
+                    <p className="mt-2 text-xl font-medium text-white sm:text-2xl">
+                      {guestName || t.fallbackGuest}
+                    </p>
+                  </motion.div>
+
+                  <motion.p
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.45 }}
+                    className="mx-auto mt-8 max-w-3xl text-sm leading-8 text-[#e7d1da] sm:text-base sm:leading-9 md:text-lg"
+                  >
+                    {t.heroText}
+                  </motion.p>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.9, delay: 0.55 }}
+                    className="mt-9 space-y-2 text-sm text-[#d9b4c4] sm:text-base"
+                  >
+                    <p>{t.dateLine}</p>
+                    <p>Jakarta, Indonesia</p>
+                  </motion.div>
+
+                  <motion.button
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.85, delay: 0.65 }}
+                    onClick={openInvitation}
+                    className="mt-10 inline-flex items-center justify-center rounded-full border border-[#d78bab] bg-[linear-gradient(180deg,#b25580_0%,#8d3a62_100%)] px-8 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(178,85,128,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_15px_38px_rgba(178,85,128,0.42)] sm:px-10"
+                  >
+                    {t.openButton}
+                  </motion.button>
                 </div>
-              </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0, y: 12, letterSpacing: "0.7em" }}
-                animate={{ opacity: 1, y: 0, letterSpacing: "0.35em" }}
-                transition={{ duration: 0.8, delay: 0.15 }}
-                className="text-[10px] uppercase text-[#d7a2b7] sm:text-xs"
-              >
-                {t.invitationLabel}
-              </motion.p>
-
-              <motion.h1
-                initial={{ opacity: 0, y: 22, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{ duration: 0.95, delay: 0.2 }}
-                className="mt-6 bg-gradient-to-b from-white via-[#f1d6e1] to-[#d8a4b8] bg-clip-text font-serif text-4xl text-transparent sm:text-5xl md:text-7xl"
-              >
-                Jeremy &amp; Yowanda
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.28 }}
-                className="mt-4 text-xs uppercase tracking-[0.28em] text-[#d9b4c4] sm:text-sm sm:tracking-[0.35em]"
-              >
-                Save The Date
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.35 }}
-                className="mx-auto mt-7 max-w-xl rounded-[1.3rem] border border-white/10 bg-black/20 px-4 py-4 text-[#d9b4c4] sm:px-5"
-              >
-                <p className="text-xs uppercase tracking-[0.24em] sm:text-sm sm:tracking-[0.28em]">
-                  {t.openTo}
-                </p>
-                <p className="mt-2 text-lg text-white sm:text-xl">
-                  {guestName || t.fallbackGuest}
-                </p>
-              </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.45 }}
-                className="mx-auto mt-7 max-w-2xl text-sm leading-7 text-[#e3c8d4] sm:text-base sm:leading-8 md:text-lg"
-              >
-                {t.heroText}
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.9, delay: 0.55 }}
-                className="mt-8 space-y-2 text-sm text-[#d9b4c4] sm:text-base"
-              >
-                <p>{t.dateLine}</p>
-                <p>Jakarta, Indonesia</p>
-              </motion.div>
-
-              <motion.button
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.85, delay: 0.65 }}
-                onClick={openInvitation}
-                className="mt-10 rounded-full border border-[#c67897] bg-gradient-to-r from-[#7b294f] to-[#a44572] px-7 py-3 text-sm font-medium text-white shadow-[0_0_40px_rgba(164,69,114,0.35)] transition hover:scale-[1.02] sm:px-8"
-              >
-                {t.openButton}
-              </motion.button>
+              </div>
             </motion.div>
           </motion.div>
         )}
@@ -956,7 +967,9 @@ export default function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.8, delay: i * 0.06 }}
-                  className={`grid items-center gap-6 rounded-[1.8rem] border border-white/10 bg-white/5 p-4 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:gap-8 sm:p-5 md:grid-cols-2 md:rounded-[2rem] md:p-6 ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}
+                  className={`grid items-center gap-6 rounded-[1.8rem] border border-white/10 bg-white/5 p-4 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:gap-8 sm:p-5 md:grid-cols-2 md:rounded-[2rem] md:p-6 ${
+                    i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
+                  }`}
                 >
                   <div className="overflow-hidden rounded-[1.4rem] border border-white/10 sm:rounded-[1.5rem]">
                     <img
@@ -1148,7 +1161,9 @@ export default function App() {
                   whileHover={{ y: -8, scale: 1.02 }}
                   transition={{ duration: 0.35 }}
                   onClick={() => setSelectedImage(src)}
-                  className={`${i === 1 || i === 4 ? "md:mt-12" : ""} group overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:rounded-[2rem]`}
+                  className={`group overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:rounded-[2rem] ${
+                    i === 1 || i === 4 ? "md:mt-12" : ""
+                  }`}
                 >
                   <div className="relative">
                     <img
@@ -1205,7 +1220,7 @@ export default function App() {
                 </div>
                 <button
                   onClick={() => copyText("1234567890", "bca")}
-                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white hover:bg-white/10"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white transition hover:bg-white/10"
                 >
                   <Copy size={14} />
                   {copiedKey === "bca" ? t.copied : t.copyAccount}
@@ -1224,7 +1239,7 @@ export default function App() {
                 </div>
                 <button
                   onClick={() => copyText("081234567890", "wallet")}
-                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white hover:bg-white/10"
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white transition hover:bg-white/10"
                 >
                   <Copy size={14} />
                   {copiedKey === "wallet" ? t.copied : t.copyNumber}
@@ -1257,7 +1272,9 @@ export default function App() {
                   <button
                     key={key}
                     onClick={() => setAttendance(key)}
-                    className={`rounded-[1.4rem] border p-5 text-center transition hover:scale-[1.02] sm:rounded-[1.6rem] sm:p-6 ${style.border} ${style.bg} ${active ? "ring-2 ring-white/50" : ""}`}
+                    className={`rounded-[1.4rem] border p-5 text-center transition hover:scale-[1.02] sm:rounded-[1.6rem] sm:p-6 ${style.border} ${style.bg} ${
+                      active ? "ring-2 ring-white/50" : ""
+                    }`}
                   >
                     <h3 className="font-serif text-2xl text-white">{title}</h3>
                     <p className="mt-3 text-sm text-[#f3dfe6] sm:text-base">{desc}</p>
@@ -1288,14 +1305,14 @@ export default function App() {
                 <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
                   <button
                     onClick={() => setGuestCount((prev) => Math.max(1, prev - 1))}
-                    className="rounded-full border border-white/10 p-2 text-white hover:bg-white/10"
+                    className="rounded-full border border-white/10 p-2 text-white transition hover:bg-white/10"
                   >
                     <Minus size={16} />
                   </button>
                   <span className="text-xl text-white">{guestCount}</span>
                   <button
                     onClick={() => setGuestCount((prev) => prev + 1)}
-                    className="rounded-full border border-white/10 p-2 text-white hover:bg-white/10"
+                    className="rounded-full border border-white/10 p-2 text-white transition hover:bg-white/10"
                   >
                     <Plus size={16} />
                   </button>

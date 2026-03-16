@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import {
   CalendarDays,
   ChevronDown,
   Copy,
   ExternalLink,
   Gift,
-  Heart,
   Image as ImageIcon,
   MapPin,
   MessageCircleHeart,
@@ -38,6 +37,7 @@ const STORY_IMAGES = [
 
 const BRIDE_PHOTO = "/couple/bride.jpg";
 const GROOM_PHOTO = "/couple/groom.jpg";
+const HERO_COUPLE_PHOTO = "/couple/hero-couple.jpg";
 
 const WEDDING_DATE_ISO = "2026-06-28T17:30:00+07:00";
 
@@ -323,31 +323,49 @@ function SectionHeading({ eyebrow, title, subtitle }) {
         whileInView={{ opacity: 1, letterSpacing: "0.45em" }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="uppercase text-[#d6a1b7]"
+        className="text-[11px] uppercase text-[#d6a1b7] md:text-xs"
       >
         {eyebrow}
       </motion.p>
+
       <motion.h2
         initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         viewport={{ once: true }}
         transition={{ duration: 0.95, delay: 0.08 }}
-        className="mt-4 font-serif text-4xl text-white md:text-5xl"
+        className="mt-4 font-serif text-3xl text-white sm:text-4xl md:text-5xl"
       >
         {title}
       </motion.h2>
+
       {subtitle ? (
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.14 }}
-          className="mx-auto mt-5 max-w-2xl leading-8 text-[#ead9e0]"
+          className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#ead9e0] md:text-base md:leading-8"
         >
           {subtitle}
         </motion.p>
       ) : null}
     </motion.div>
+  );
+}
+
+function ParallaxSection({ children, offset = 60, className = "" }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
+
+  return (
+    <section ref={ref} className={className}>
+      <motion.div style={{ y }}>{children}</motion.div>
+    </section>
   );
 }
 
@@ -501,39 +519,6 @@ export default function App() {
           }}
         />
 
-        <motion.div
-          className="absolute left-[10%] top-0 h-[120vh] w-[22vw] blur-3xl"
-          animate={{ opacity: [0.04, 0.085, 0.04], x: [0, 20, 0] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(255,190,225,0.2) 0%, rgba(255,190,225,0.05) 18%, transparent 45%)",
-            clipPath: "polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)",
-          }}
-        />
-
-        <motion.div
-          className="absolute right-[8%] top-0 h-[120vh] w-[20vw] blur-3xl"
-          animate={{ opacity: [0.03, 0.07, 0.03], x: [0, -18, 0] }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(193,160,255,0.16) 0%, rgba(193,160,255,0.04) 18%, transparent 45%)",
-            clipPath: "polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%)",
-          }}
-        />
-
-        <motion.div
-          className="absolute left-1/2 top-0 h-[100vh] w-[60vw] -translate-x-1/2 blur-3xl"
-          animate={{ opacity: [0.04, 0.08, 0.04] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,225,238,0.04) 16%, transparent 42%)",
-            clipPath: "ellipse(40% 55% at 50% 0%)",
-          }}
-        />
-
         {STARS.map((star) => (
           <motion.div
             key={`star-${star.id}`}
@@ -650,17 +635,17 @@ export default function App() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_42%,rgba(0,0,0,0.2)_78%,rgba(0,0,0,0.5)_100%)]" />
       </div>
 
-      <div className="fixed right-4 top-4 z-50 flex items-center gap-3 md:right-6 md:top-6">
+      <div className="fixed right-3 top-3 z-50 flex items-center gap-2 sm:right-4 sm:top-4 md:right-6 md:top-6 md:gap-3">
         <div className="flex overflow-hidden rounded-full border border-white/15 bg-black/35 shadow-2xl backdrop-blur-xl">
           <button
             onClick={() => setLanguage("id")}
-            className={`px-4 py-2 text-sm transition ${language === "id" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+            className={`px-3 py-2 text-xs transition sm:px-4 sm:text-sm ${language === "id" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
           >
             ID
           </button>
           <button
             onClick={() => setLanguage("en")}
-            className={`px-4 py-2 text-sm transition ${language === "en" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
+            className={`px-3 py-2 text-xs transition sm:px-4 sm:text-sm ${language === "en" ? "bg-white text-black" : "text-white hover:bg-white/10"}`}
           >
             EN
           </button>
@@ -668,14 +653,14 @@ export default function App() {
 
         <button
           onClick={toggleMusic}
-          className="flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-4 py-2 text-sm text-white shadow-2xl backdrop-blur-xl transition hover:bg-black/50"
+          className="flex items-center gap-2 rounded-full border border-white/15 bg-black/35 px-3 py-2 text-xs text-white shadow-2xl backdrop-blur-xl transition hover:bg-black/50 sm:px-4 sm:text-sm"
         >
-          {musicOn ? <Pause size={16} /> : <Music2 size={16} />}
+          {musicOn ? <Pause size={14} /> : <Music2 size={14} />}
           {musicOn ? t.musicOff : t.musicOn}
         </button>
       </div>
 
-      <div className="fixed bottom-5 left-1/2 z-40 hidden -translate-x-1/2 rounded-full border border-white/10 bg-black/35 px-3 py-2 backdrop-blur-xl md:flex md:items-center md:gap-1">
+      <div className="fixed bottom-4 left-1/2 z-40 hidden -translate-x-1/2 rounded-full border border-white/10 bg-black/35 px-3 py-2 backdrop-blur-xl md:flex md:items-center md:gap-1">
         {[
           ["#story", t.navStory],
           ["#event", t.navEvent],
@@ -712,10 +697,10 @@ export default function App() {
               initial={{ opacity: 0, y: 28 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1 }}
-              className="relative z-10 mx-6 w-full max-w-3xl overflow-hidden rounded-[2.2rem] border border-white/10 bg-white/[0.06] px-8 py-14 text-center shadow-[0_25px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl md:px-14"
+              className="relative z-10 mx-4 w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.06] px-6 py-10 text-center shadow-[0_25px_120px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:px-8 sm:py-12 md:px-14"
             >
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.06),transparent_28%,transparent_72%,rgba(255,255,255,0.04))]" />
-              <div className="pointer-events-none absolute inset-[14px] rounded-[1.8rem] border border-white/10" />
+              <div className="pointer-events-none absolute inset-[12px] rounded-[1.7rem] border border-white/10" />
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -723,16 +708,16 @@ export default function App() {
                 transition={{ duration: 0.8, delay: 0.1 }}
                 className="relative mb-5 flex justify-center"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d7a2b7]">
-                  <Sparkles size={20} />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-white/10 text-[#d7a2b7] sm:h-14 sm:w-14">
+                  <Sparkles size={18} />
                 </div>
               </motion.div>
 
               <motion.p
                 initial={{ opacity: 0, y: 12, letterSpacing: "0.7em" }}
-                animate={{ opacity: 1, y: 0, letterSpacing: "0.45em" }}
+                animate={{ opacity: 1, y: 0, letterSpacing: "0.35em" }}
                 transition={{ duration: 0.8, delay: 0.15 }}
-                className="text-xs uppercase text-[#d7a2b7]"
+                className="text-[10px] uppercase text-[#d7a2b7] sm:text-xs"
               >
                 {t.invitationLabel}
               </motion.p>
@@ -741,7 +726,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 22, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.95, delay: 0.2 }}
-                className="mt-6 bg-gradient-to-b from-white via-[#f1d6e1] to-[#d8a4b8] bg-clip-text font-serif text-5xl text-transparent md:text-7xl"
+                className="mt-6 bg-gradient-to-b from-white via-[#f1d6e1] to-[#d8a4b8] bg-clip-text font-serif text-4xl text-transparent sm:text-5xl md:text-7xl"
               >
                 Jeremy &amp; Yowanda
               </motion.h1>
@@ -750,7 +735,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.28 }}
-                className="mt-4 text-sm uppercase tracking-[0.35em] text-[#d9b4c4]"
+                className="mt-4 text-xs uppercase tracking-[0.28em] text-[#d9b4c4] sm:text-sm sm:tracking-[0.35em]"
               >
                 Save The Date
               </motion.p>
@@ -759,17 +744,21 @@ export default function App() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.35 }}
-                className="mx-auto mt-7 max-w-xl rounded-[1.5rem] border border-white/10 bg-black/20 px-5 py-4 text-[#d9b4c4]"
+                className="mx-auto mt-7 max-w-xl rounded-[1.3rem] border border-white/10 bg-black/20 px-4 py-4 text-[#d9b4c4] sm:px-5"
               >
-                <p className="text-sm uppercase tracking-[0.28em]">{t.openTo}</p>
-                <p className="mt-2 text-xl text-white">{guestName || t.fallbackGuest}</p>
+                <p className="text-xs uppercase tracking-[0.24em] sm:text-sm sm:tracking-[0.28em]">
+                  {t.openTo}
+                </p>
+                <p className="mt-2 text-lg text-white sm:text-xl">
+                  {guestName || t.fallbackGuest}
+                </p>
               </motion.div>
 
               <motion.p
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.45 }}
-                className="mx-auto mt-7 max-w-2xl text-base leading-8 text-[#e3c8d4] md:text-lg"
+                className="mx-auto mt-7 max-w-2xl text-sm leading-7 text-[#e3c8d4] sm:text-base sm:leading-8 md:text-lg"
               >
                 {t.heroText}
               </motion.p>
@@ -778,7 +767,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, delay: 0.55 }}
-                className="mt-8 space-y-2 text-[#d9b4c4]"
+                className="mt-8 space-y-2 text-sm text-[#d9b4c4] sm:text-base"
               >
                 <p>{t.dateLine}</p>
                 <p>Jakarta, Indonesia</p>
@@ -789,7 +778,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.85, delay: 0.65 }}
                 onClick={openInvitation}
-                className="mt-10 rounded-full border border-[#c67897] bg-gradient-to-r from-[#7b294f] to-[#a44572] px-8 py-3 text-sm font-medium text-white shadow-[0_0_40px_rgba(164,69,114,0.35)] transition hover:scale-[1.02]"
+                className="mt-10 rounded-full border border-[#c67897] bg-gradient-to-r from-[#7b294f] to-[#a44572] px-7 py-3 text-sm font-medium text-white shadow-[0_0_40px_rgba(164,69,114,0.35)] transition hover:scale-[1.02] sm:px-8"
               >
                 {t.openButton}
               </motion.button>
@@ -798,528 +787,575 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <section className="relative z-10 flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 text-center">
-        <motion.div
-          className="absolute left-1/2 top-[24%] h-[26rem] w-[26rem] -translate-x-1/2 rounded-full blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(255,220,235,0.15) 0%, rgba(214,120,160,0.07) 34%, transparent 72%)",
-          }}
-          animate={{
-            y: [0, 14, 0],
-            scale: [1, 1.04, 1],
-            opacity: [0.16, 0.24, 0.16],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        <div className="mx-auto max-w-6xl">
-          <motion.p
-            initial={{ opacity: 0, y: 14, letterSpacing: "0.7em" }}
-            whileInView={{ opacity: 1, y: 0, letterSpacing: "0.55em" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="uppercase text-[#d8a1b8]"
-          >
-            {t.theWeddingOf}
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.08 }}
-            className="mt-6 bg-gradient-to-b from-white via-[#f6dfe8] to-[#d6a6b8] bg-clip-text font-serif text-6xl text-transparent md:text-8xl lg:text-[7rem]"
-          >
-            Jeremy &amp; Yowanda
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.16 }}
-            className="mx-auto mt-8 max-w-3xl text-base leading-8 text-[#ebd7df] md:text-lg"
-          >
-            {t.heroText}
-          </motion.p>
-
+      <ParallaxSection offset={35} className="relative z-10">
+        <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-24 text-center sm:px-6">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.24 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-4"
-          >
-            <a
-              href="#event"
-              className="rounded-full border border-[#d285a6] bg-gradient-to-r from-[#7d2d53] to-[#a34a74] px-7 py-3 text-sm font-medium text-white shadow-2xl"
-            >
-              {t.detailsButton}
-            </a>
-            <a
-              href="#gallery"
-              className="rounded-full border border-white/15 bg-white/5 px-7 py-3 text-sm font-medium text-white backdrop-blur-xl"
-            >
-              {t.galleryButton}
-            </a>
-          </motion.div>
-
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="mt-16 flex justify-center text-[#d9a8bc]"
-          >
-            <ChevronDown size={28} />
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="relative z-10 px-6 pb-8 text-center">
-        <div className="mx-auto max-w-3xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-10">
-          <p className="uppercase tracking-[0.4em] text-[#d6a1b7]">
-            {t.verseLabel}
-          </p>
-          <p className="mt-5 font-serif text-2xl leading-10 text-white md:text-3xl">
-            {t.verseText}
-          </p>
-          <p className="mt-4 text-sm uppercase tracking-[0.28em] text-[#d7a8bb]">
-            {t.verseRef}
-          </p>
-        </div>
-      </section>
-
-      <section className="relative z-10 px-6 py-24 text-center">
-        <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <SectionHeading
-            eyebrow={t.countdownLabel}
-            title={t.countdownTitle}
+            className="absolute left-1/2 top-[18%] h-[22rem] w-[22rem] -translate-x-1/2 rounded-full blur-3xl sm:h-[26rem] sm:w-[26rem]"
+            style={{
+              background:
+                "radial-gradient(circle, rgba(255,220,235,0.15) 0%, rgba(214,120,160,0.07) 34%, transparent 72%)",
+            }}
+            animate={{
+              y: [0, 14, 0],
+              scale: [1, 1.04, 1],
+              opacity: [0.16, 0.24, 0.16],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-            {[
-              { label: t.days, value: timeLeft.days },
-              { label: t.hours, value: timeLeft.hours },
-              { label: t.minutes, value: timeLeft.minutes },
-              { label: t.seconds, value: timeLeft.seconds },
-            ].map((item, idx) => (
-              <motion.div
-                key={item.label}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: idx * 0.08 }}
-                className="rounded-[1.5rem] border border-white/10 bg-black/25 p-6 shadow-xl backdrop-blur-xl"
-              >
-                <div className="text-4xl font-semibold text-white md:text-5xl">
-                  {item.value}
-                </div>
-                <div className="mt-2 text-xs uppercase tracking-[0.3em] text-[#d7a8bb]">
-                  {item.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="story" className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeading
-            eyebrow={t.storyLabel}
-            title={t.storyTitle}
-          />
-
-          <div className="mt-16 space-y-10">
-            {t.stories.map((story, i) => (
-              <motion.div
-                key={story.year}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, delay: i * 0.06 }}
-                className={`grid items-center gap-8 rounded-[2rem] border border-white/10 bg-white/5 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl md:grid-cols-2 md:p-6 ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}
-              >
-                <div className="overflow-hidden rounded-[1.5rem] border border-white/10">
-                  <img
-                    src={STORY_IMAGES[i] || STORY_IMAGES[0]}
-                    alt={story.title}
-                    className="h-[280px] w-full object-cover transition duration-700 hover:scale-105"
-                  />
-                </div>
-
-                <div className="px-2 md:px-4">
-                  <p className="text-sm uppercase tracking-[0.35em] text-[#d9a9bc]">
-                    {story.year}
-                  </p>
-                  <h3 className="mt-3 font-serif text-3xl text-white">{story.title}</h3>
-                  <p className="mt-5 leading-8 text-[#ead9e0]">{story.text}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeading
-            eyebrow={t.coupleLabel}
-            title={t.coupleTitle}
-            subtitle={t.coupleText}
-          />
-
-          <div className="mt-14 grid gap-8 md:grid-cols-2">
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
+          <div className="mx-auto w-full max-w-6xl">
+            <motion.p
+              initial={{ opacity: 0, y: 14, letterSpacing: "0.6em" }}
+              whileInView={{ opacity: 1, y: 0, letterSpacing: "0.35em" }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl"
+              className="text-[10px] uppercase text-[#d8a1b8] sm:text-xs sm:tracking-[0.55em]"
             >
-              <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border border-[#ba7896]/40 shadow-xl">
-                <img
-                  src={BRIDE_PHOTO}
-                  alt="Yowanda"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <p className="mt-6 text-sm uppercase tracking-[0.3em] text-[#d5a2b6]">
-                {t.bride}
-              </p>
-              <h3 className="mt-3 font-serif text-4xl text-white">Yowanda</h3>
-              <p className="mt-4 leading-8 text-[#ead9e0]">
-                {t.daughterOf}
-                <br />
-                Bapak [Nama Ayah] &amp; Ibu [Nama Ibu]
-              </p>
-            </motion.div>
+              {t.theWeddingOf}
+            </motion.p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
+            <motion.h1
+              initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.08 }}
+              className="mt-5 bg-gradient-to-b from-white via-[#f6dfe8] to-[#d6a6b8] bg-clip-text font-serif text-4xl text-transparent sm:text-6xl md:text-8xl lg:text-[7rem]"
+            >
+              Jeremy &amp; Yowanda
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.08 }}
-              className="rounded-[2rem] border border-white/10 bg-white/5 p-8 text-center shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl"
+              transition={{ duration: 1, delay: 0.16 }}
+              className="mx-auto mt-6 max-w-3xl px-2 text-sm leading-7 text-[#ebd7df] sm:text-base sm:leading-8 md:text-lg"
             >
-              <div className="mx-auto h-40 w-40 overflow-hidden rounded-full border border-[#ba7896]/40 shadow-xl">
-                <img
-                  src={GROOM_PHOTO}
-                  alt="Jeremy"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <p className="mt-6 text-sm uppercase tracking-[0.3em] text-[#d5a2b6]">
-                {t.groom}
-              </p>
-              <h3 className="mt-3 font-serif text-4xl text-white">Jeremy</h3>
-              <p className="mt-4 leading-8 text-[#ead9e0]">
-                {t.sonOf}
-                <br />
-                Bapak [Nama Ayah] &amp; Ibu [Nama Ibu]
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section id="event" className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-6xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <SectionHeading
-            eyebrow={t.eventLabel}
-            title={t.eventTitle}
-          />
-
-          <div className="mt-14 grid gap-8 md:grid-cols-2">
-            <motion.div
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.75 }}
-              className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 backdrop-blur-xl"
-            >
-              <div className="mb-4 flex items-center justify-center text-[#d4a1b5]">
-                <CalendarDays size={28} />
-              </div>
-              <h3 className="text-center font-serif text-3xl text-white">
-                {t.ceremony}
-              </h3>
-              <p className="mt-5 text-center leading-8 text-[#ead9e0]">
-                {t.dateLine}
-                <br />
-                {t.ceremonyTime}
-              </p>
-              <div className="mt-6 flex items-start justify-center gap-2 text-center text-[#d7b5c3]">
-                <MapPin size={16} className="mt-1 shrink-0" />
-                <span>{t.chapel}</span>
-              </div>
-              <div className="mt-8 flex justify-center">
-                <a
-                  href="https://maps.google.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white transition hover:bg-white/10"
-                >
-                  {t.mapButton}
-                  <ExternalLink size={14} />
-                </a>
-              </div>
-            </motion.div>
+              {t.heroText}
+            </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 28, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.75, delay: 0.08 }}
-              className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 backdrop-blur-xl"
+              transition={{ duration: 1, delay: 0.24 }}
+              className="mx-auto mt-10 w-full max-w-4xl"
             >
-              <div className="mb-4 flex items-center justify-center text-[#d4a1b5]">
-                <Sparkles size={28} />
-              </div>
-              <h3 className="text-center font-serif text-3xl text-white">
-                {t.reception}
-              </h3>
-              <p className="mt-5 text-center leading-8 text-[#ead9e0]">
-                {t.dateLine}
-                <br />
-                {t.receptionTime}
-              </p>
-              <div className="mt-6 flex items-start justify-center gap-2 text-center text-[#d7b5c3]">
-                <MapPin size={16} className="mt-1 shrink-0" />
-                <span>{t.ballroom}</span>
-              </div>
-              <div className="mt-8 flex justify-center">
-                <a
-                  href="https://maps.google.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white transition hover:bg-white/10"
-                >
-                  {t.mapButton}
-                  <ExternalLink size={14} />
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      <section id="gallery" className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeading
-            eyebrow={t.galleryLabel}
-            title={t.galleryTitle}
-            subtitle={t.gallerySubtitle}
-          />
-
-          <div className="mt-14 grid gap-6 md:grid-cols-3">
-            {GALLERY.map((src, i) => (
-              <motion.button
-                key={src}
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.35 }}
-                onClick={() => setSelectedImage(src)}
-                className={`${i === 1 || i === 4 ? "md:mt-12" : ""} group overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl`}
-              >
-                <div className="relative">
+              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-2 shadow-[0_25px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[2.5rem] sm:p-3">
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.08),transparent_35%,transparent_70%,rgba(255,255,255,0.06))]" />
+                <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10 sm:rounded-[2rem]">
                   <img
-                    src={src}
-                    className="h-[420px] w-full object-cover transition duration-500 group-hover:scale-105"
-                    alt={`Prewedding ${i + 1}`}
+                    src={HERO_COUPLE_PHOTO}
+                    alt="Jeremy and Yowanda"
+                    className="h-[320px] w-full object-cover sm:h-[440px] md:h-[560px] lg:h-[640px]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
-                  <div className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-black/35 p-3 text-white opacity-0 backdrop-blur-xl transition group-hover:opacity-100">
-                    <ImageIcon size={18} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/8 to-black/10" />
+                  <div className="absolute inset-x-0 bottom-0 p-5 text-center sm:p-8">
+                    <p className="text-[10px] uppercase tracking-[0.28em] text-[#ecd6df] sm:text-xs sm:tracking-[0.45em]">
+                      Forever Begins Here
+                    </p>
+                    <p className="mt-2 font-serif text-2xl text-white sm:text-4xl md:text-5xl">
+                      28 June 2026
+                    </p>
                   </div>
                 </div>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="gift" className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <SectionHeading
-            eyebrow={t.giftLabel}
-            title={t.giftTitle}
-            subtitle={t.giftText}
-          />
-
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            <div className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 text-center backdrop-blur-xl">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
-                <QrCode size={24} />
               </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">{t.qrTitle}</h3>
-              <p className="mt-3 text-sm text-[#e6cfd9]">{t.qrText}</p>
-              <div className="mt-6 flex justify-center">
-                <img
-                  src="/gift/qr-code.png"
-                  alt="QR Code"
-                  className="h-40 w-40 rounded-xl border border-white/10 bg-white object-cover"
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+            >
+              <a
+                href="#event"
+                className="rounded-full border border-[#d285a6] bg-gradient-to-r from-[#7d2d53] to-[#a34a74] px-6 py-3 text-sm font-medium text-white shadow-2xl sm:px-7"
+              >
+                {t.detailsButton}
+              </a>
+              <a
+                href="#gallery"
+                className="rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur-xl sm:px-7"
+              >
+                {t.galleryButton}
+              </a>
+            </motion.div>
+
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="mt-12 flex justify-center text-[#d9a8bc] sm:mt-16"
+            >
+              <ChevronDown size={28} />
+            </motion.div>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={30} className="relative z-10">
+        <section className="px-4 pb-8 text-center sm:px-6">
+          <div className="mx-auto max-w-3xl rounded-[1.8rem] border border-white/10 bg-white/5 p-6 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8 md:p-10">
+            <p className="text-[11px] uppercase tracking-[0.32em] text-[#d6a1b7] sm:tracking-[0.4em]">
+              {t.verseLabel}
+            </p>
+            <p className="mt-5 font-serif text-xl leading-9 text-white sm:text-2xl sm:leading-10 md:text-3xl">
+              {t.verseText}
+            </p>
+            <p className="mt-4 text-xs uppercase tracking-[0.24em] text-[#d7a8bb] sm:text-sm sm:tracking-[0.28em]">
+              {t.verseRef}
+            </p>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={35} className="relative z-10">
+        <section className="px-4 py-20 text-center sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-5xl rounded-[1.8rem] border border-white/10 bg-white/5 p-6 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8 md:p-12">
+            <SectionHeading eyebrow={t.countdownLabel} title={t.countdownTitle} />
+
+            <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:mt-12 sm:gap-4 md:grid-cols-4 md:gap-6">
+              {[
+                { label: t.days, value: timeLeft.days },
+                { label: t.hours, value: timeLeft.hours },
+                { label: t.minutes, value: timeLeft.minutes },
+                { label: t.seconds, value: timeLeft.seconds },
+              ].map((item, idx) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: idx * 0.08 }}
+                  className="rounded-[1.2rem] border border-white/10 bg-black/25 p-5 shadow-xl backdrop-blur-xl sm:rounded-[1.5rem] sm:p-6"
+                >
+                  <div className="text-3xl font-semibold text-white sm:text-4xl md:text-5xl">
+                    {item.value}
+                  </div>
+                  <div className="mt-2 text-[10px] uppercase tracking-[0.24em] text-[#d7a8bb] sm:text-xs sm:tracking-[0.3em]">
+                    {item.label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={45} className="relative z-10">
+        <section id="story" className="px-4 py-20 sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading eyebrow={t.storyLabel} title={t.storyTitle} />
+
+            <div className="mt-14 space-y-8 sm:mt-16 sm:space-y-10">
+              {t.stories.map((story, i) => (
+                <motion.div
+                  key={story.year}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.8, delay: i * 0.06 }}
+                  className={`grid items-center gap-6 rounded-[1.8rem] border border-white/10 bg-white/5 p-4 shadow-[0_20px_70px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:gap-8 sm:p-5 md:grid-cols-2 md:rounded-[2rem] md:p-6 ${i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""}`}
+                >
+                  <div className="overflow-hidden rounded-[1.4rem] border border-white/10 sm:rounded-[1.5rem]">
+                    <img
+                      src={STORY_IMAGES[i] || STORY_IMAGES[0]}
+                      alt={story.title}
+                      className="h-[240px] w-full object-cover transition duration-700 hover:scale-105 sm:h-[280px]"
+                    />
+                  </div>
+
+                  <div className="px-1 sm:px-2 md:px-4">
+                    <p className="text-xs uppercase tracking-[0.28em] text-[#d9a9bc] sm:text-sm sm:tracking-[0.35em]">
+                      {story.year}
+                    </p>
+                    <h3 className="mt-3 font-serif text-2xl text-white sm:text-3xl">
+                      {story.title}
+                    </h3>
+                    <p className="mt-4 text-sm leading-7 text-[#ead9e0] sm:mt-5 sm:text-base sm:leading-8">
+                      {story.text}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={40} className="relative z-10">
+        <section className="px-4 py-20 sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow={t.coupleLabel}
+              title={t.coupleTitle}
+              subtitle={t.coupleText}
+            />
+
+            <div className="mt-12 grid gap-6 sm:mt-14 sm:gap-8 md:grid-cols-2">
+              <motion.div
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="rounded-[1.8rem] border border-white/10 bg-white/5 p-6 text-center shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8"
+              >
+                <div className="mx-auto h-32 w-32 overflow-hidden rounded-full border border-[#ba7896]/40 shadow-xl sm:h-40 sm:w-40">
+                  <img
+                    src={BRIDE_PHOTO}
+                    alt="Yowanda"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <p className="mt-6 text-xs uppercase tracking-[0.24em] text-[#d5a2b6] sm:text-sm sm:tracking-[0.3em]">
+                  {t.bride}
+                </p>
+                <h3 className="mt-3 font-serif text-3xl text-white sm:text-4xl">
+                  Yowanda
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[#ead9e0] sm:text-base sm:leading-8">
+                  {t.daughterOf}
+                  <br />
+                  Bapak [Nama Ayah] &amp; Ibu [Nama Ibu]
+                </p>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.08 }}
+                className="rounded-[1.8rem] border border-white/10 bg-white/5 p-6 text-center shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8"
+              >
+                <div className="mx-auto h-32 w-32 overflow-hidden rounded-full border border-[#ba7896]/40 shadow-xl sm:h-40 sm:w-40">
+                  <img
+                    src={GROOM_PHOTO}
+                    alt="Jeremy"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <p className="mt-6 text-xs uppercase tracking-[0.24em] text-[#d5a2b6] sm:text-sm sm:tracking-[0.3em]">
+                  {t.groom}
+                </p>
+                <h3 className="mt-3 font-serif text-3xl text-white sm:text-4xl">
+                  Jeremy
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[#ead9e0] sm:text-base sm:leading-8">
+                  {t.sonOf}
+                  <br />
+                  Bapak [Nama Ayah] &amp; Ibu [Nama Ibu]
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={35} className="relative z-10">
+        <section id="event" className="px-4 py-20 sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-6xl rounded-[1.8rem] border border-white/10 bg-white/5 p-6 shadow-[0_20px_100px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8 md:p-12">
+            <SectionHeading eyebrow={t.eventLabel} title={t.eventTitle} />
+
+            <div className="mt-10 grid gap-6 sm:mt-14 sm:gap-8 md:grid-cols-2">
+              <motion.div
+                initial={{ opacity: 0, y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.75 }}
+                className="rounded-[1.5rem] border border-white/10 bg-black/20 p-6 backdrop-blur-xl sm:rounded-[1.8rem] sm:p-8"
+              >
+                <div className="mb-4 flex items-center justify-center text-[#d4a1b5]">
+                  <CalendarDays size={28} />
+                </div>
+                <h3 className="text-center font-serif text-2xl text-white sm:text-3xl">
+                  {t.ceremony}
+                </h3>
+                <p className="mt-5 text-center text-sm leading-7 text-[#ead9e0] sm:text-base sm:leading-8">
+                  {t.dateLine}
+                  <br />
+                  {t.ceremonyTime}
+                </p>
+                <div className="mt-6 flex items-start justify-center gap-2 text-center text-sm text-[#d7b5c3] sm:text-base">
+                  <MapPin size={16} className="mt-1 shrink-0" />
+                  <span>{t.chapel}</span>
+                </div>
+                <div className="mt-8 flex justify-center">
+                  <a
+                    href="https://maps.google.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white transition hover:bg-white/10"
+                  >
+                    {t.mapButton}
+                    <ExternalLink size={14} />
+                  </a>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 26 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.75, delay: 0.08 }}
+                className="rounded-[1.5rem] border border-white/10 bg-black/20 p-6 backdrop-blur-xl sm:rounded-[1.8rem] sm:p-8"
+              >
+                <div className="mb-4 flex items-center justify-center text-[#d4a1b5]">
+                  <Sparkles size={28} />
+                </div>
+                <h3 className="text-center font-serif text-2xl text-white sm:text-3xl">
+                  {t.reception}
+                </h3>
+                <p className="mt-5 text-center text-sm leading-7 text-[#ead9e0] sm:text-base sm:leading-8">
+                  {t.dateLine}
+                  <br />
+                  {t.receptionTime}
+                </p>
+                <div className="mt-6 flex items-start justify-center gap-2 text-center text-sm text-[#d7b5c3] sm:text-base">
+                  <MapPin size={16} className="mt-1 shrink-0" />
+                  <span>{t.ballroom}</span>
+                </div>
+                <div className="mt-8 flex justify-center">
+                  <a
+                    href="https://maps.google.com"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white transition hover:bg-white/10"
+                  >
+                    {t.mapButton}
+                    <ExternalLink size={14} />
+                  </a>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={40} className="relative z-10">
+        <section id="gallery" className="px-4 py-20 sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow={t.galleryLabel}
+              title={t.galleryTitle}
+              subtitle={t.gallerySubtitle}
+            />
+
+            <div className="mt-10 grid gap-4 sm:mt-14 sm:gap-6 md:grid-cols-3">
+              {GALLERY.map((src, i) => (
+                <motion.button
+                  key={src}
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.35 }}
+                  onClick={() => setSelectedImage(src)}
+                  className={`${i === 1 || i === 4 ? "md:mt-12" : ""} group overflow-hidden rounded-[1.6rem] border border-white/10 bg-white/5 text-left shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-xl sm:rounded-[2rem]`}
+                >
+                  <div className="relative">
+                    <img
+                      src={src}
+                      className="h-[320px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[420px]"
+                      alt={`Prewedding ${i + 1}`}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+                    <div className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-black/35 p-3 text-white opacity-0 backdrop-blur-xl transition group-hover:opacity-100">
+                      <ImageIcon size={18} />
+                    </div>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={30} className="relative z-10">
+        <section id="gift" className="px-4 py-20 sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-5xl rounded-[1.8rem] border border-white/10 bg-white/5 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8 md:p-12">
+            <SectionHeading
+              eyebrow={t.giftLabel}
+              title={t.giftTitle}
+              subtitle={t.giftText}
+            />
+
+            <div className="mt-10 grid gap-6 sm:mt-12 sm:gap-8 md:grid-cols-3">
+              <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-6 text-center backdrop-blur-xl sm:rounded-[1.8rem] sm:p-8">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
+                  <QrCode size={24} />
+                </div>
+                <h3 className="mt-5 font-serif text-2xl text-white">{t.qrTitle}</h3>
+                <p className="mt-3 text-sm text-[#e6cfd9]">{t.qrText}</p>
+                <div className="mt-6 flex justify-center">
+                  <img
+                    src="/gift/qr-code.png"
+                    alt="QR Code"
+                    className="h-36 w-36 rounded-xl border border-white/10 bg-white object-cover sm:h-40 sm:w-40"
+                  />
+                </div>
+              </div>
+
+              <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-6 text-center backdrop-blur-xl sm:rounded-[1.8rem] sm:p-8">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
+                  <Gift size={24} />
+                </div>
+                <h3 className="mt-5 font-serif text-2xl text-white">{t.bankTitle}</h3>
+                <p className="mt-3 text-sm text-[#e6cfd9]">{t.bankSubtitle}</p>
+                <div className="mt-6 space-y-2 text-[#ead9e0]">
+                  <p className="text-lg font-medium">1234567890</p>
+                  <p>a.n Jeremy</p>
+                </div>
+                <button
+                  onClick={() => copyText("1234567890", "bca")}
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white hover:bg-white/10"
+                >
+                  <Copy size={14} />
+                  {copiedKey === "bca" ? t.copied : t.copyAccount}
+                </button>
+              </div>
+
+              <div className="rounded-[1.5rem] border border-white/10 bg-black/20 p-6 text-center backdrop-blur-xl sm:rounded-[1.8rem] sm:p-8">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
+                  <Users size={24} />
+                </div>
+                <h3 className="mt-5 font-serif text-2xl text-white">{t.walletTitle}</h3>
+                <p className="mt-3 text-sm text-[#e6cfd9]">{t.walletSubtitle}</p>
+                <div className="mt-6 space-y-2 text-[#ead9e0]">
+                  <p className="text-lg font-medium">0812-3456-7890</p>
+                  <p>a.n Yowanda</p>
+                </div>
+                <button
+                  onClick={() => copyText("081234567890", "wallet")}
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white hover:bg-white/10"
+                >
+                  <Copy size={14} />
+                  {copiedKey === "wallet" ? t.copied : t.copyNumber}
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </ParallaxSection>
+
+      <ParallaxSection offset={25} className="relative z-10">
+        <section id="rsvp" className="px-4 py-20 sm:px-6 sm:py-24">
+          <div className="mx-auto max-w-5xl rounded-[1.8rem] border border-white/10 bg-white/5 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8 md:p-12">
+            <SectionHeading
+              eyebrow={t.rsvpLabel}
+              title={t.rsvpTitle}
+              subtitle={t.rsvpText}
+            />
+
+            <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
+              {[
+                ["attending", t.attending, t.attendingDesc],
+                ["maybe", t.maybe, t.maybeDesc],
+                ["notAttending", t.notAttending, t.notAttendingDesc],
+              ].map(([key, title, desc]) => {
+                const active = attendance === key;
+                const style = RSVP_OPTIONS[key];
+
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setAttendance(key)}
+                    className={`rounded-[1.4rem] border p-5 text-center transition hover:scale-[1.02] sm:rounded-[1.6rem] sm:p-6 ${style.border} ${style.bg} ${active ? "ring-2 ring-white/50" : ""}`}
+                  >
+                    <h3 className="font-serif text-2xl text-white">{title}</h3>
+                    <p className="mt-3 text-sm text-[#f3dfe6] sm:text-base">{desc}</p>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-8 grid gap-6 sm:mt-10 md:grid-cols-2">
+              <div className="space-y-4">
+                <label className="block text-sm text-[#ead9e0]">{t.fullName}</label>
+                <input
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
+                  placeholder={t.fullName}
+                />
+
+                <label className="block text-sm text-[#ead9e0]">{t.whatsapp}</label>
+                <input
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
+                  placeholder={t.whatsapp}
+                />
+
+                <label className="block text-sm text-[#ead9e0]">{t.guests}</label>
+                <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
+                  <button
+                    onClick={() => setGuestCount((prev) => Math.max(1, prev - 1))}
+                    className="rounded-full border border-white/10 p-2 text-white hover:bg-white/10"
+                  >
+                    <Minus size={16} />
+                  </button>
+                  <span className="text-xl text-white">{guestCount}</span>
+                  <button
+                    onClick={() => setGuestCount((prev) => prev + 1)}
+                    className="rounded-full border border-white/10 p-2 text-white hover:bg-white/10"
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="block text-sm text-[#ead9e0]">{t.wishes}</label>
+                <textarea
+                  value={form.wishes}
+                  onChange={(e) => setForm({ ...form, wishes: e.target.value })}
+                  className="min-h-[188px] w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
+                  placeholder={t.wishes}
                 />
               </div>
             </div>
 
-            <div className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 text-center backdrop-blur-xl">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
-                <Gift size={24} />
+            <div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-[1.5rem] border border-white/10 bg-black/20 p-5 md:flex-row md:items-center">
+              <div>
+                <p className="text-xs uppercase tracking-[0.22em] text-[#d6a1b7] sm:text-sm sm:tracking-[0.25em]">
+                  {t.attendanceSummary}
+                </p>
+                <p className="mt-2 text-lg text-white sm:text-xl">
+                  {attendance === "attending"
+                    ? t.attending
+                    : attendance === "maybe"
+                      ? t.maybe
+                      : t.notAttending}
+                </p>
               </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">{t.bankTitle}</h3>
-              <p className="mt-3 text-sm text-[#e6cfd9]">{t.bankSubtitle}</p>
-              <div className="mt-6 space-y-2 text-[#ead9e0]">
-                <p className="text-lg font-medium">1234567890</p>
-                <p>a.n Jeremy</p>
-              </div>
-              <button
-                onClick={() => copyText("1234567890", "bca")}
-                className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white hover:bg-white/10"
-              >
-                <Copy size={14} />
-                {copiedKey === "bca" ? t.copied : t.copyAccount}
-              </button>
-            </div>
 
-            <div className="rounded-[1.8rem] border border-white/10 bg-black/20 p-8 text-center backdrop-blur-xl">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[#f1d1dc]">
-                <Users size={24} />
-              </div>
-              <h3 className="mt-5 font-serif text-2xl text-white">{t.walletTitle}</h3>
-              <p className="mt-3 text-sm text-[#e6cfd9]">{t.walletSubtitle}</p>
-              <div className="mt-6 space-y-2 text-[#ead9e0]">
-                <p className="text-lg font-medium">0812-3456-7890</p>
-                <p>a.n Yowanda</p>
-              </div>
               <button
-                onClick={() => copyText("081234567890", "wallet")}
-                className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2 text-sm text-white hover:bg-white/10"
+                onClick={handleSubmit}
+                className="inline-flex items-center gap-2 rounded-full border border-[#d285a6] bg-gradient-to-r from-[#7d2d53] to-[#a34a74] px-7 py-3 text-sm font-medium text-white shadow-2xl"
               >
-                <Copy size={14} />
-                {copiedKey === "wallet" ? t.copied : t.copyNumber}
+                <MessageCircleHeart size={16} />
+                {t.sendRsvp}
               </button>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ParallaxSection>
 
-      <section id="rsvp" className="relative z-10 px-6 py-24">
-        <div className="mx-auto max-w-5xl rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:p-12">
-          <SectionHeading
-            eyebrow={t.rsvpLabel}
-            title={t.rsvpTitle}
-            subtitle={t.rsvpText}
-          />
-
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {[
-              ["attending", t.attending, t.attendingDesc],
-              ["maybe", t.maybe, t.maybeDesc],
-              ["notAttending", t.notAttending, t.notAttendingDesc],
-            ].map(([key, title, desc]) => {
-              const active = attendance === key;
-              const style = RSVP_OPTIONS[key];
-
-              return (
-                <button
-                  key={key}
-                  onClick={() => setAttendance(key)}
-                  className={`rounded-[1.6rem] border p-6 text-center transition hover:scale-[1.02] ${style.border} ${style.bg} ${active ? "ring-2 ring-white/50" : ""}`}
-                >
-                  <h3 className="font-serif text-2xl text-white">{title}</h3>
-                  <p className="mt-3 text-[#f3dfe6]">{desc}</p>
-                </button>
-              );
-            })}
+      <ParallaxSection offset={18} className="relative z-10">
+        <section className="px-4 pb-24 pt-10 sm:px-6">
+          <div className="mx-auto max-w-4xl rounded-[1.8rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6 text-center shadow-[0_20px_80px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-8 md:p-12">
+            <SectionHeading
+              eyebrow={t.closingLabel}
+              title={t.closingTitle}
+              subtitle={t.closingText}
+            />
           </div>
+        </section>
+      </ParallaxSection>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            <div className="space-y-4">
-              <label className="block text-sm text-[#ead9e0]">{t.fullName}</label>
-              <input
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
-                placeholder={t.fullName}
-              />
-
-              <label className="block text-sm text-[#ead9e0]">{t.whatsapp}</label>
-              <input
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
-                placeholder={t.whatsapp}
-              />
-
-              <label className="block text-sm text-[#ead9e0]">{t.guests}</label>
-              <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
-                <button
-                  onClick={() => setGuestCount((prev) => Math.max(1, prev - 1))}
-                  className="rounded-full border border-white/10 p-2 text-white hover:bg-white/10"
-                >
-                  <Minus size={16} />
-                </button>
-                <span className="text-xl text-white">{guestCount}</span>
-                <button
-                  onClick={() => setGuestCount((prev) => prev + 1)}
-                  className="rounded-full border border-white/10 p-2 text-white hover:bg-white/10"
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <label className="block text-sm text-[#ead9e0]">{t.wishes}</label>
-              <textarea
-                value={form.wishes}
-                onChange={(e) => setForm({ ...form, wishes: e.target.value })}
-                className="min-h-[188px] w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
-                placeholder={t.wishes}
-              />
-            </div>
-          </div>
-
-          <div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-[1.6rem] border border-white/10 bg-black/20 p-5 md:flex-row md:items-center">
-            <div>
-              <p className="text-sm uppercase tracking-[0.25em] text-[#d6a1b7]">
-                {t.attendanceSummary}
-              </p>
-              <p className="mt-2 text-xl text-white">
-                {attendance === "attending"
-                  ? t.attending
-                  : attendance === "maybe"
-                    ? t.maybe
-                    : t.notAttending}
-              </p>
-            </div>
-
-            <button
-              onClick={handleSubmit}
-              className="inline-flex items-center gap-2 rounded-full border border-[#d285a6] bg-gradient-to-r from-[#7d2d53] to-[#a34a74] px-7 py-3 text-sm font-medium text-white shadow-2xl"
-            >
-              <MessageCircleHeart size={16} />
-              {t.sendRsvp}
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section className="relative z-10 px-6 pb-24 pt-10">
-        <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-8 text-center shadow-[0_20px_80px_rgba(0,0,0,0.4)] backdrop-blur-2xl md:p-12">
-          <SectionHeading
-            eyebrow={t.closingLabel}
-            title={t.closingTitle}
-            subtitle={t.closingText}
-          />
-        </div>
-      </section>
-
-      <footer className="relative z-10 border-t border-white/10 px-6 py-10 text-center">
+      <footer className="relative z-10 border-t border-white/10 px-4 py-10 text-center sm:px-6">
         <p className="bg-gradient-to-b from-white to-[#dba8bb] bg-clip-text font-serif text-3xl text-transparent md:text-4xl">
           Jeremy &amp; Yowanda
         </p>
-        <p className="mt-3 text-[#e8d4dc]">{t.footer}</p>
+        <p className="mt-3 text-sm text-[#e8d4dc] sm:text-base">{t.footer}</p>
       </footer>
 
       <AnimatePresence>
@@ -1331,7 +1367,7 @@ export default function App() {
             className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4 backdrop-blur-md"
             onClick={() => setSelectedImage(null)}
           >
-            <button className="absolute right-5 top-5 rounded-full border border-white/15 bg-white/10 p-3 text-white">
+            <button className="absolute right-4 top-4 rounded-full border border-white/15 bg-white/10 p-3 text-white sm:right-5 sm:top-5">
               <X size={18} />
             </button>
             <motion.img

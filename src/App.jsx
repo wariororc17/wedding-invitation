@@ -11,9 +11,9 @@ import {
   MapPin,
   MessageCircleHeart,
   Minus,
-  Plus,
   Music2,
   Pause,
+  Plus,
   QrCode,
   Sparkles,
   Users,
@@ -29,7 +29,7 @@ const GALLERY = [
   "/gallery/photo 6.jpg",
 ];
 
-const WEDDING_DATE_ISO = "2026-10-24T17:30:00+07:00";
+const WEDDING_DATE_ISO = "2026-06-28T17:30:00+07:00";
 
 const CONTENT = {
   en: {
@@ -82,7 +82,7 @@ const CONTENT = {
       },
     ],
     coupleLabel: "Meet The Couple",
-    coupleTitle: "Jerry & Wanda",
+    coupleTitle: "Jeremy & Yowanda",
     coupleText:
       "With gratitude to God and surrounded by the love of family and friends, we invite you to share in this unforgettable day with us.",
     bride: "Bride",
@@ -93,7 +93,7 @@ const CONTENT = {
     eventTitle: "Celebrate With Us",
     ceremony: "Holy Matrimony",
     reception: "Wedding Reception",
-    dateLine: "Saturday, October 24th 2026",
+    dateLine: "Sunday, June 28th 2026",
     ceremonyTime: "5.30 PM",
     receptionTime: "7.00 PM - 10.00 PM",
     chapel: "St. Andrew's Chapel, Jakarta",
@@ -191,7 +191,7 @@ const CONTENT = {
       },
     ],
     coupleLabel: "Mempelai",
-    coupleTitle: "Jerry & Wanda",
+    coupleTitle: "Jeremy & Yowanda",
     coupleText:
       "Dengan syukur kepada Tuhan dan dikelilingi kasih keluarga serta sahabat, kami mengundang Anda untuk menjadi bagian dari hari yang tak terlupakan ini.",
     bride: "Mempelai Wanita",
@@ -202,7 +202,7 @@ const CONTENT = {
     eventTitle: "Rayakan Bersama Kami",
     ceremony: "Pemberkatan Nikah",
     reception: "Resepsi Pernikahan",
-    dateLine: "Sabtu, 24 Oktober 2026",
+    dateLine: "Minggu, 28 Juni 2026",
     ceremonyTime: "17.30 WIB",
     receptionTime: "19.00 WIB - 22.00 WIB",
     chapel: "St. Andrew's Chapel, Jakarta",
@@ -271,6 +271,16 @@ const STARS = Array.from({ length: 36 }, (_, index) => ({
   delay: Math.random() * 6,
   duration: 2.6 + Math.random() * 3.8,
   opacity: 0.2 + Math.random() * 0.45,
+}));
+
+const DUST = Array.from({ length: 26 }, (_, index) => ({
+  id: index,
+  left: `${Math.random() * 100}%`,
+  top: `${Math.random() * 100}%`,
+  size: 40 + Math.random() * 90,
+  delay: Math.random() * 8,
+  duration: 14 + Math.random() * 10,
+  opacity: 0.03 + Math.random() * 0.05,
 }));
 
 const RSVP_OPTIONS = {
@@ -385,8 +395,8 @@ export default function App() {
 
     const message =
       language === "en"
-        ? `Hello Jerry & Wanda,%0A%0AName: ${form.name || "-"}%0AAttendance: ${statusLabel}%0AGuests: ${guestCount}%0AWhatsApp: ${form.phone || "-"}%0AWishes: ${form.wishes || "-"}`
-        : `Halo Jerry & Wanda,%0A%0ANama: ${form.name || "-"}%0AKehadiran: ${statusLabel}%0AJumlah tamu: ${guestCount}%0AWhatsApp: ${form.phone || "-"}%0AUcapan: ${form.wishes || "-"}`;
+        ? `Hello Jeremy & Yowanda,%0A%0AName: ${form.name || "-"}%0AAttendance: ${statusLabel}%0AGuests: ${guestCount}%0AWhatsApp: ${form.phone || "-"}%0AWishes: ${form.wishes || "-"}`
+        : `Halo Jeremy & Yowanda,%0A%0ANama: ${form.name || "-"}%0AKehadiran: ${statusLabel}%0AJumlah tamu: ${guestCount}%0AWhatsApp: ${form.phone || "-"}%0AUcapan: ${form.wishes || "-"}`;
 
     window.open(`https://wa.me/6281234567890?text=${message}`, "_blank");
   };
@@ -405,12 +415,67 @@ export default function App() {
           }}
           transition={{ type: "tween", ease: "easeOut", duration: 0.35 }}
         />
+
         <motion.div
           className="absolute inset-0"
           animate={{
             background: `radial-gradient(circle at ${22 + Math.min(scrollY / 80, 18)}% ${26 + Math.min(scrollY / 55, 28)}%, rgba(255,255,255,0.045), transparent 22%)`,
           }}
           transition={{ type: "tween", ease: "easeOut", duration: 0.45 }}
+        />
+
+        <motion.div
+          className="absolute left-1/2 top-[8%] h-[42rem] w-[42rem] -translate-x-1/2 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.08, 1],
+            opacity: [0.16, 0.24, 0.16],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,220,235,0.22) 0%, rgba(214,120,160,0.12) 34%, rgba(120,40,80,0.04) 60%, transparent 76%)",
+          }}
+        />
+
+        <motion.div
+          className="absolute left-[-10%] top-[22%] h-[32rem] w-[32rem] rounded-full blur-3xl"
+          animate={{
+            x: [0, 30, 0],
+            y: [0, -18, 0],
+            opacity: [0.1, 0.18, 0.1],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,190,220,0.18) 0%, rgba(165,80,120,0.08) 42%, transparent 72%)",
+          }}
+        />
+
+        <motion.div
+          className="absolute right-[-8%] top-[28%] h-[30rem] w-[30rem] rounded-full blur-3xl"
+          animate={{
+            x: [0, -26, 0],
+            y: [0, 20, 0],
+            opacity: [0.08, 0.16, 0.08],
+          }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(180,140,255,0.16) 0%, rgba(98,60,170,0.08) 38%, transparent 72%)",
+          }}
+        />
+
+        <motion.div
+          className="absolute left-1/2 top-0 h-[120vh] w-[70vw] -translate-x-1/2 blur-3xl"
+          animate={{
+            opacity: [0.05, 0.1, 0.05],
+          }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,220,235,0.04) 18%, transparent 42%)",
+            clipPath: "ellipse(40% 50% at 50% 0%)",
+          }}
         />
 
         {STARS.map((star) => (
@@ -447,6 +512,35 @@ export default function App() {
             <div className="absolute left-1/2 top-1/2 h-[1px] w-[220%] -translate-x-1/2 -translate-y-1/2 bg-white/35 blur-[1px]" />
           </motion.div>
         ))}
+
+        {DUST.map((dust) => (
+          <motion.div
+            key={`dust-${dust.id}`}
+            className="absolute rounded-full blur-3xl"
+            initial={{ opacity: dust.opacity }}
+            animate={{
+              x: [0, 18, -14, 0],
+              y: [0, -22, 16, 0],
+              opacity: [dust.opacity, dust.opacity * 1.6, dust.opacity],
+              scale: [1, 1.08, 0.96, 1],
+            }}
+            transition={{
+              duration: dust.duration,
+              delay: dust.delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            style={{
+              left: dust.left,
+              top: dust.top,
+              width: dust.size,
+              height: dust.size,
+              background:
+                "radial-gradient(circle, rgba(255,235,245,0.9) 0%, rgba(255,210,230,0.35) 35%, transparent 72%)",
+            }}
+          />
+        ))}
+
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(180,80,120,0.18),transparent_26%),radial-gradient(circle_at_80%_18%,rgba(130,70,160,0.16),transparent_24%),radial-gradient(circle_at_50%_75%,rgba(120,30,60,0.22),transparent_32%),linear-gradient(180deg,#0a0611_0%,#06040a_45%,#0a0611_100%)]" />
         <div className="absolute inset-0 opacity-[0.14] bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
@@ -501,6 +595,7 @@ export default function App() {
             </div>
           </motion.div>
         ))}
+
         <motion.div
           animate={{ y: [0, -20, 0], opacity: [0.16, 0.28, 0.16] }}
           transition={{ duration: 8, repeat: Infinity }}
@@ -516,6 +611,8 @@ export default function App() {
           transition={{ duration: 9, repeat: Infinity }}
           className="absolute bottom-[7%] left-[28%] h-72 w-72 rounded-full bg-[#d17a96]/10 blur-3xl"
         />
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_45%,rgba(0,0,0,0.18)_78%,rgba(0,0,0,0.42)_100%)]" />
       </div>
 
       <div className="fixed right-4 top-4 z-50 flex items-center gap-3 md:right-6 md:top-6">
@@ -587,7 +684,7 @@ export default function App() {
                 {t.invitationLabel}
               </p>
               <h1 className="mt-5 font-serif text-5xl text-white md:text-7xl">
-                Jerry &amp; Wanda
+                Jeremy &amp; Yowanda
               </h1>
               <p className="mt-5 text-base leading-8 text-[#e3c8d4] md:text-lg">
                 {t.welcome}
@@ -616,7 +713,21 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <section className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-24 text-center">
+      <section className="relative z-10 flex min-h-screen items-center justify-center overflow-hidden px-6 pt-24 text-center">
+        <motion.div
+          className="absolute left-1/2 top-[20%] h-[28rem] w-[28rem] -translate-x-1/2 rounded-full blur-3xl"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(255,220,235,0.16) 0%, rgba(214,120,160,0.08) 34%, transparent 72%)",
+          }}
+          animate={{
+            y: [0, 16, 0],
+            scale: [1, 1.04, 1],
+            opacity: [0.18, 0.28, 0.18],
+          }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        />
+
         <div className="mx-auto max-w-6xl">
           <motion.p
             initial={{ opacity: 0, y: 14 }}
@@ -633,7 +744,7 @@ export default function App() {
             transition={{ duration: 1, delay: 0.1 }}
             className="mt-6 bg-gradient-to-b from-white via-[#f6dfe8] to-[#d6a6b8] bg-clip-text font-serif text-6xl text-transparent md:text-8xl lg:text-[7rem]"
           >
-            Jerry &amp; Wanda
+            Jeremy &amp; Yowanda
           </motion.h1>
 
           <motion.p
@@ -783,7 +894,7 @@ export default function App() {
               <p className="mt-6 text-sm uppercase tracking-[0.3em] text-[#d5a2b6]">
                 {t.bride}
               </p>
-              <h3 className="mt-3 font-serif text-4xl text-white">Wanda</h3>
+              <h3 className="mt-3 font-serif text-4xl text-white">Yowanda</h3>
               <p className="mt-4 leading-8 text-[#ead9e0]">
                 {t.daughterOf}
                 <br />
@@ -798,7 +909,7 @@ export default function App() {
               <p className="mt-6 text-sm uppercase tracking-[0.3em] text-[#d5a2b6]">
                 {t.groom}
               </p>
-              <h3 className="mt-3 font-serif text-4xl text-white">Jerry</h3>
+              <h3 className="mt-3 font-serif text-4xl text-white">Jeremy</h3>
               <p className="mt-4 leading-8 text-[#ead9e0]">
                 {t.sonOf}
                 <br />
@@ -964,7 +1075,7 @@ export default function App() {
               <p className="mt-3 text-sm text-[#e6cfd9]">{t.bankSubtitle}</p>
               <div className="mt-6 space-y-2 text-[#ead9e0]">
                 <p className="text-lg font-medium">1234567890</p>
-                <p>a.n Jerry</p>
+                <p>a.n Jeremy</p>
               </div>
               <button
                 onClick={() => copyText("1234567890", "bca")}
@@ -985,7 +1096,7 @@ export default function App() {
               <p className="mt-3 text-sm text-[#e6cfd9]">{t.walletSubtitle}</p>
               <div className="mt-6 space-y-2 text-[#ead9e0]">
                 <p className="text-lg font-medium">0812-3456-7890</p>
-                <p>a.n Wanda</p>
+                <p>a.n Yowanda</p>
               </div>
               <button
                 onClick={() => copyText("081234567890", "wallet")}
@@ -1042,9 +1153,7 @@ export default function App() {
               </label>
               <input
                 value={form.name}
-                onChange={(e) =>
-                  setForm({ ...form, name: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
                 placeholder={t.fullName}
               />
@@ -1054,9 +1163,7 @@ export default function App() {
               </label>
               <input
                 value={form.phone}
-                onChange={(e) =>
-                  setForm({ ...form, phone: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
                 className="w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
                 placeholder={t.whatsapp}
               />
@@ -1066,9 +1173,7 @@ export default function App() {
               </label>
               <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
                 <button
-                  onClick={() =>
-                    setGuestCount((prev) => Math.max(1, prev - 1))
-                  }
+                  onClick={() => setGuestCount((prev) => Math.max(1, prev - 1))}
                   className="rounded-full border border-white/10 p-2 text-white hover:bg-white/10"
                 >
                   <Minus size={16} />
@@ -1089,9 +1194,7 @@ export default function App() {
               </label>
               <textarea
                 value={form.wishes}
-                onChange={(e) =>
-                  setForm({ ...form, wishes: e.target.value })
-                }
+                onChange={(e) => setForm({ ...form, wishes: e.target.value })}
                 className="min-h-[188px] w-full rounded-2xl border border-white/10 bg-black/20 px-5 py-4 text-white outline-none placeholder:text-white/40"
                 placeholder={t.wishes}
               />
@@ -1139,7 +1242,7 @@ export default function App() {
 
       <footer className="relative z-10 border-t border-white/10 px-6 py-10 text-center">
         <p className="bg-gradient-to-b from-white to-[#dba8bb] bg-clip-text font-serif text-3xl text-transparent md:text-4xl">
-          Jerry &amp; Wanda
+          Jeremy &amp; Yowanda
         </p>
         <p className="mt-3 text-[#e8d4dc]">{t.footer}</p>
       </footer>
